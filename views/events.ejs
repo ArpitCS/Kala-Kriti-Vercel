@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Kala-Kriti | Events</title>
+  <%- include('partials/base-head') %>
+</head>
+<body class="bg-gray-50">
+  <!-- Set the active page for the header -->
+  <% locals.page = 'events' %>
+  
+  <!-- Header -->
+  <%- include('partials/header') %>
+  
+  <!-- Events Header Section - Updated to match artists.ejs style -->
+  <section class="bg-white py-12">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto text-center">
+        <h1 class="text-4xl md:text-5xl font-semibold mb-4">Art Events</h1>
+        <p class="text-gray-600 text-lg">
+          Exhibitions, workshops, and gatherings for the art community. 
+          Join us for in-person and virtual events that celebrate creativity
+          and connect artists with enthusiasts.
+        </p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Upcoming Offline Events Section -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-semibold mb-3">Upcoming Offline Events</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto">Experience art in person at these carefully curated exhibitions and workshops</p>
+      </div>
+      
+      <!-- Events Slider -->
+      <div class="flex overflow-x-auto pb-6 -mx-4 px-4 space-x-6 scrollbar-hide">
+        <% if (upcomingOfflineEvents && upcomingOfflineEvents.length > 0) { %>
+          <% upcomingOfflineEvents.forEach(event => { %>
+            <!-- Event Card -->
+            <div class="flex-shrink-0 w-72 bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div class="relative h-48">
+                <img
+                  src="<%= event.imageUrl || 'https://i.pinimg.com/736x/fe/1b/6d/fe1b6dbecf9616490acd6eb465c25e48.jpg' %>"
+                  alt="<%= event.name %>"
+                  class="w-full h-full object-cover"
+                />
+                <div class="absolute bottom-0 left-0 bg-black bg-opacity-70 text-white py-1 px-3">
+                  <p class="text-sm font-medium"><%= new Date(event.startTime).toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'}) %></p>
+                </div>
+              </div>
+              <div class="p-5">
+                <h3 class="text-lg font-semibold mb-2"><%= event.name %></h3>
+                <div class="flex items-center text-gray-600 text-sm mb-2">
+                  <i class="far fa-clock mr-2"></i>
+                  <span><%= new Date(event.startTime).toLocaleTimeString('en-US', {hour: 'numeric', minute: '2-digit'}) %> - <%= new Date(event.endTime).toLocaleTimeString('en-US', {hour: 'numeric', minute: '2-digit'}) %></span>
+                </div>
+                <div class="flex items-center text-gray-600 text-sm mb-3">
+                  <i class="fas fa-map-marker-alt mr-2"></i>
+                  <span><%= event.location %></span>
+                </div>
+                <div class="flex items-center text-gray-600 text-sm mb-4">
+                  <span class="bg-gray-100 rounded-full px-3 py-1"><%= event.category %></span>
+                </div>
+                <a href="/events/<%= event._id %>" class="block text-center px-4 py-2 border border-black text-black font-medium rounded-md hover:bg-black hover:text-white transition-colors duration-200">
+                  View Details
+                </a>
+              </div>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <div class="text-center w-full py-8">
+            <p class="text-gray-500">No upcoming offline events at the moment.</p>
+          </div>
+        <% } %>
+      </div>
+      
+      <div class="text-center mt-8">
+        <a href="/events/offline" class="inline-block px-6 py-3 border border-black text-black font-medium rounded-md hover:bg-black hover:text-white transition-colors duration-200">
+          View All Offline Events
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Upcoming Online Events Section -->
+  <section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-semibold mb-3">Upcoming Online Events</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto">Participate in virtual art experiences from anywhere in the world</p>
+      </div>
+      
+      <!-- Events Slider -->
+      <div class="flex overflow-x-auto pb-6 -mx-4 px-4 space-x-6 scrollbar-hide">
+        <% if (upcomingOnlineEvents && upcomingOnlineEvents.length > 0) { %>
+          <% upcomingOnlineEvents.forEach(event => { %>
+            <!-- Event Card -->
+            <div class="flex-shrink-0 w-72 bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div class="relative h-48">
+                <img
+                  src="<%= event.imageUrl || 'https://thumbs2.follow.art/thumbs/event_list_xxxl/pieces-thubnail-666-x-400-px-673b9b0fca083920734255.jpg' %>"
+                  alt="<%= event.name %>"
+                  class="w-full h-full object-cover"
+                />
+                <div class="absolute bottom-0 left-0 bg-black bg-opacity-70 text-white py-1 px-3">
+                  <p class="text-sm font-medium"><%= new Date(event.startTime).toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'}) %></p>
+                </div>
+                <div class="absolute top-3 right-3 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                  ONLINE
+                </div>
+              </div>
+              <div class="p-5">
+                <h3 class="text-lg font-semibold mb-2"><%= event.name %></h3>
+                <div class="flex items-center text-gray-600 text-sm mb-2">
+                  <i class="far fa-clock mr-2"></i>
+                  <span><%= new Date(event.startTime).toLocaleTimeString('en-US', {hour: 'numeric', minute: '2-digit'}) %> - <%= new Date(event.endTime).toLocaleTimeString('en-US', {hour: 'numeric', minute: '2-digit'}) %></span>
+                </div>
+                <div class="flex items-center text-gray-600 text-sm mb-3">
+                  <i class="fas fa-video mr-2"></i>
+                  <span><%= event.platform || 'Online' %></span>
+                </div>
+                <div class="flex items-center text-gray-600 text-sm mb-4">
+                  <span class="bg-gray-100 rounded-full px-3 py-1"><%= event.category %></span>
+                </div>
+                <a href="/events/<%= event._id %>" class="block text-center px-4 py-2 border border-black text-black font-medium rounded-md hover:bg-black hover:text-white transition-colors duration-200">
+                  View Details
+                </a>
+              </div>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <div class="text-center w-full py-8">
+            <p class="text-gray-500">No upcoming online events at the moment.</p>
+          </div>
+        <% } %>
+      </div>
+      
+      <div class="text-center mt-8">
+        <a href="/events/online" class="inline-block px-6 py-3 border border-black text-black font-medium rounded-md hover:bg-black hover:text-white transition-colors duration-200">
+          View All Online Events
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Past Events Section -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-semibold mb-3">Past Events</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto">Browse through our successful past events and exhibitions</p>
+      </div>
+      
+      <!-- Events Slider -->
+      <div class="flex overflow-x-auto pb-6 -mx-4 px-4 space-x-6 scrollbar-hide">
+        <% if (pastEvents && pastEvents.length > 0) { %>
+          <% pastEvents.forEach(event => { %>
+            <!-- Event Card -->
+            <div class="flex-shrink-0 w-72 bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div class="relative h-48">
+                <img
+                  src="<%= event.imageUrl || 'https://i.pinimg.com/736x/9d/c7/2f/9dc72fc53cd7f5dd2a9a3370d3fc2b4a.jpg' %>"
+                  alt="<%= event.name %>"
+                  class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-300"
+                />
+                <div class="absolute bottom-0 left-0 bg-black bg-opacity-70 text-white py-1 px-3">
+                  <p class="text-sm font-medium"><%= new Date(event.startTime).toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'}) %></p>
+                </div>
+              </div>
+              <div class="p-5">
+                <h3 class="text-lg font-semibold mb-2"><%= event.name %></h3>
+                <div class="flex items-center text-gray-600 text-sm mb-2">
+                  <i class="fas fa-map-marker-alt mr-2"></i>
+                  <span><%= event.location %></span>
+                </div>
+                <div class="flex items-center text-gray-600 text-sm mb-4">
+                  <span class="bg-gray-100 rounded-full px-3 py-1"><%= event.category %></span>
+                </div>
+                <a href="/events/<%= event._id %>" class="block text-center px-4 py-2 border border-black text-black font-medium rounded-md hover:bg-black hover:text-white transition-colors duration-200">
+                  View Gallery
+                </a>
+              </div>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <div class="text-center w-full py-8">
+            <p class="text-gray-500">No past events to display.</p>
+          </div>
+        <% } %>
+      </div>
+      
+      <div class="text-center mt-8">
+        <a href="/events/past" class="inline-block px-6 py-3 border border-black text-black font-medium rounded-md hover:bg-black hover:text-white transition-colors duration-200">
+          View All Past Events
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Event Calendar Section -->
+  <section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-semibold mb-3">Event Calendar</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto">Plan ahead with our complete schedule of upcoming art events</p>
+      </div>
+      
+      <div class="bg-white rounded-lg shadow overflow-hidden overflow-x-auto">
+        <% if (calendarEvents && calendarEvents.length > 0) { %>
+          <table class="w-full min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-800 text-white">
+              <tr>
+                <th class="px-6 py-4 text-left text-sm font-semibold">Event Name</th>
+                <th class="px-6 py-4 text-left text-sm font-semibold">Date</th>
+                <th class="px-6 py-4 text-left text-sm font-semibold">Time</th>
+                <th class="px-6 py-4 text-left text-sm font-semibold">Venue</th>
+                <th class="px-6 py-4 text-left text-sm font-semibold">Category</th>
+                <th class="px-6 py-4 text-left text-sm font-semibold">Mode</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+              <% calendarEvents.forEach(event => { %>
+                <tr class="hover:bg-gray-50">
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="font-medium"><%= event.name %></span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-gray-600">
+                    <%= new Date(event.startTime).toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'}) %>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-gray-600">
+                    <%= new Date(event.startTime).toLocaleTimeString('en-US', {hour: 'numeric', minute: '2-digit'}) %> - 
+                    <%= new Date(event.endTime).toLocaleTimeString('en-US', {hour: 'numeric', minute: '2-digit'}) %>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-gray-600">
+                    <%= event.type === 'Online' ? (event.platform || 'Online') : event.location %>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="bg-gray-100 text-gray-800 text-xs font-medium py-1 px-2 rounded-full"><%= event.category %></span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <% if (event.type === 'Online') { %>
+                      <span class="bg-green-100 text-green-800 text-xs font-medium py-1 px-2 rounded-full">Online</span>
+                    <% } else { %>
+                      <span class="bg-blue-100 text-blue-800 text-xs font-medium py-1 px-2 rounded-full">Offline</span>
+                    <% } %>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        <% } else { %>
+          <div class="text-center py-8">
+            <p class="text-gray-500">No upcoming events scheduled.</p>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Call To Action -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto bg-gray-50 p-8 md:p-12 rounded-lg shadow-sm text-center">
+        <h2 class="text-3xl font-semibold mb-4">Want to Host an Art Event?</h2>
+        <p class="text-gray-600 mb-8 max-w-2xl mx-auto">Partner with Kala-Kriti to organize and promote your art event to our community of collectors and enthusiasts.</p>
+        <a href="/contact" class="px-6 py-3 bg-black text-white font-medium rounded-md hover:bg-gray-800 transition-colors duration-200">
+          Contact Us
+        </a>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  <%- include('partials/footer') %>
+  
+  <!-- Common Scripts -->
+  <%- include('partials/base-scripts') %>
+  
+  <style>
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+    .scrollbar-hide {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</body>
+</html>

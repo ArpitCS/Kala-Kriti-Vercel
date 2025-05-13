@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Kala-Kriti | Home</title>
+  <%- include('partials/base-head') %>
+</head>
+<body class="bg-gray-50">
+  <!-- Set the active page for the header -->
+  <% locals.page = 'home' %>
+  
+  <!-- Header -->
+  <%- include('partials/header') %>
+  
+  <!-- Hero Section -->
+  <section class="relative bg-white">
+    <div class="container mx-auto py-16 lg:py-24 px-4">
+      <div class="flex flex-col lg:flex-row items-center">
+        <div class="w-full lg:w-1/2 mb-12 lg:mb-0 lg:pr-10">
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-semibold mb-6 leading-tight">Discover Original <span class="italic text-gray-800">Artworks</span> from Emerging Artists</h1>
+          <p class="text-gray-600 text-lg mb-8">Browse our curated collection of unique paintings, sculptures, and more. Find the perfect piece to enhance your space.</p>
+          <div class="flex flex-wrap gap-4">
+            <a href="/gallery" class="px-6 py-3 bg-black text-white font-medium rounded-md hover:bg-gray-800 transition-colors duration-200">Explore Gallery</a>
+            <a href="/artists" class="px-6 py-3 bg-white text-black font-medium border border-black rounded-md hover:bg-gray-100 transition-colors duration-200">Meet Artists</a>
+          </div>
+        </div>
+        <div class="w-full lg:w-1/2">
+          <img src="/images/banner-image-1.png" alt="Featured Artwork" class="rounded-lg shadow-xl w-full h-auto">
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Featured Artworks Section -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-semibold mb-3">Featured Artworks</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto">Discover our handpicked selection of exceptional art pieces from talented creators around the world.</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        <!-- Featured Artwork Cards -->
+        <div class="group">
+          <div class="relative overflow-hidden rounded-lg mb-3">
+            <img src="https://i.pinimg.com/736x/de/ab/3d/deab3d81c927d636bc054c71afcf93c9.jpg" alt="Guernica Style Canvas" class="w-full artwork-image transform transition-transform duration-300 group-hover:scale-105">
+            <div class="absolute inset-0 bg-black bg-opacity-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+              <div class="p-4 w-full flex justify-end">
+                <div class="flex space-x-2">
+                  <button class="bg-white p-2 rounded-full text-gray-800 hover:text-black transition-colors">
+                    <i class="fa-regular fa-heart"></i>
+                  </button>
+                  <button class="bg-white p-2 rounded-full text-gray-800 hover:text-black transition-colors">
+                    <i class="fa-solid fa-cart-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <h3 class="font-medium text-gray-900">Guernica Style Canvas</h3>
+          <p class="text-sm text-gray-600 mb-1">By Pablo Picasso</p>
+          <p class="font-medium">$12,000</p>
+        </div>
+        
+        <div class="group">
+          <div class="relative overflow-hidden rounded-lg mb-3">
+            <img src="https://i.etsystatic.com/53319961/r/il/e39316/6338486424/il_1588xN.6338486424_24bh.jpg" alt="Vincent van Gogh Landscape Art" class="w-full artwork-image transform transition-transform duration-300 group-hover:scale-105">
+            <div class="absolute inset-0 bg-black bg-opacity-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+              <div class="p-4 w-full flex justify-end">
+                <div class="flex space-x-2">
+                  <button class="bg-white p-2 rounded-full text-gray-800 hover:text-black transition-colors">
+                    <i class="fa-regular fa-heart"></i>
+                  </button>
+                  <button class="bg-white p-2 rounded-full text-gray-800 hover:text-black transition-colors">
+                    <i class="fa-solid fa-cart-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <h3 class="font-medium text-gray-900">Vincent van Gogh Landscape Art</h3>
+          <p class="text-sm text-gray-600 mb-1">By Vincent van Gogh</p>
+          <p class="font-medium">$8,700</p>
+        </div>
+        
+        <div class="group">
+          <div class="relative overflow-hidden rounded-lg mb-3">
+            <img src="https://i.etsystatic.com/53319961/r/il/ab653f/6521058532/il_1588xN.6521058532_mnfe.jpg" alt="Abstract Forest Oil Painting" class="w-full artwork-image transform transition-transform duration-300 group-hover:scale-105">
+            <div class="absolute inset-0 bg-black bg-opacity-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+              <div class="p-4 w-full flex justify-end">
+                <div class="flex space-x-2">
+                  <button class="bg-white p-2 rounded-full text-gray-800 hover:text-black transition-colors">
+                    <i class="fa-regular fa-heart"></i>
+                  </button>
+                  <button class="bg-white p-2 rounded-full text-gray-800 hover:text-black transition-colors">
+                    <i class="fa-solid fa-cart-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <h3 class="font-medium text-gray-900">Abstract Forest Oil Painting</h3>
+          <p class="text-sm text-gray-600 mb-1">By Alexandra Hart</p>
+          <p class="font-medium">$12,500</p>
+        </div>
+        
+        <div class="group">
+          <div class="relative overflow-hidden rounded-lg mb-3">
+            <img src="https://i.etsystatic.com/47644130/r/il/7a6623/6497595246/il_1588xN.6497595246_jyq8.jpg" alt="Starry Night Canvas Print" class="w-full artwork-image transform transition-transform duration-300 group-hover:scale-105">
+            <div class="absolute inset-0 bg-black bg-opacity-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+              <div class="p-4 w-full flex justify-end">
+                <div class="flex space-x-2">
+                  <button class="bg-white p-2 rounded-full text-gray-800 hover:text-black transition-colors">
+                    <i class="fa-regular fa-heart"></i>
+                  </button>
+                  <button class="bg-white p-2 rounded-full text-gray-800 hover:text-black transition-colors">
+                    <i class="fa-solid fa-cart-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <h3 class="font-medium text-gray-900">Starry Night Canvas Print</h3>
+          <p class="text-sm text-gray-600 mb-1">By Vincent van Gogh</p>
+          <p class="font-medium">$6,500</p>
+        </div>
+      </div>
+      
+      <div class="text-center mt-12">
+        <a href="/artworks" class="inline-block px-6 py-3 border border-black text-black font-medium rounded-md hover:bg-gray-100 hover:text-white transition-colors duration-200">
+          View All Artworks
+        </a>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Featured Artists Section -->
+  <section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-semibold mb-3">Featured Artists</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto">Discover the talented creators behind our exclusive artwork collection.</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <!-- Artist 1 -->
+        <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+          <div class="p-6 text-center">
+            <img src="https://i3.wp.com/www.thetalentedindian.com/wp-content/uploads/2021/04/Screenshot-2021-04-29-at-11.41.39-AM.png" alt="Raja Ravi Varma" class="w-24 h-24 object-cover rounded-full mx-auto mb-4">
+            <h3 class="text-xl font-medium text-gray-900 mb-1">Raja Ravi Varma</h3>
+            <p class="text-gray-600 text-sm mb-3">Oil Painting</p>
+            <p class="text-sm text-gray-600">A celebrated Indian painter known for bringing mythological stories to life with European techniques.</p>
+          </div>
+        </div>
+        
+        <!-- Artist 2 -->
+        <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+          <div class="p-6 text-center">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSK11s0wae3t1OtN3up6xsMqcKzTWsm9cXkPA&s" alt="M.F. Husain" class="w-24 h-24 object-cover rounded-full mx-auto mb-4">
+            <h3 class="text-xl font-medium text-gray-900 mb-1">M.F. Husain</h3>
+            <p class="text-gray-600 text-sm mb-3">Contemporary Painting</p>
+            <p class="text-sm text-gray-600">One of the most iconic figures of modern Indian art with vibrant cultural paintings.</p>
+          </div>
+        </div>
+        
+        <!-- Artist 3 -->
+        <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+          <div class="p-6 text-center">
+            <img src="https://d197irk3q85upd.cloudfront.net/catalog/product/r/a/ram_kumar5.jpg" alt="Ram Kumar" class="w-24 h-24 object-cover rounded-full mx-auto mb-4">
+            <h3 class="text-xl font-medium text-gray-900 mb-1">Ram Kumar</h3>
+            <p class="text-gray-600 text-sm mb-3">Abstract Art</p>
+            <p class="text-sm text-gray-600">A master of abstract landscapes, depicting human emotions through color and form.</p>
+          </div>
+        </div>
+        
+        <!-- Artist 4 -->
+        <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+          <div class="p-6 text-center">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCEo3NUUgP4cbpKzVyzl75fDeFZtAnyGz7UVpN4SYwksYhF03iIfVa15MR-IddPBgcnFs&usqp=CAU" alt="Tyeb Mehta" class="w-24 h-24 object-cover rounded-full mx-auto mb-4">
+            <h3 class="text-xl font-medium text-gray-900 mb-1">Tyeb Mehta</h3>
+            <p class="text-gray-600 text-sm mb-3">Modern Painting</p>
+            <p class="text-sm text-gray-600">Known for bold, expressive lines and striking use of color, exploring themes of society.</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="text-center mt-12">
+        <a href="/artists" class="inline-block px-6 py-3 border border-black text-black font-medium rounded-md hover:bg-gray-100 hover:text-white transition-colors duration-200">
+          Meet All Artists
+        </a>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Testimonials Section -->
+  <section class="py-16 bg-black text-white">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-semibold mb-3">What Our Clients Say</h2>
+        <p class="text-gray-400 max-w-2xl mx-auto">Hear from art collectors and enthusiasts who have found their perfect pieces through Kala-Kriti.</p>
+      </div>
+      
+      <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <div class="max-w-3xl mx-auto text-center px-4 py-8">
+              <p class="text-xl italic mb-6">"I found the most incredible piece for my living room through Kala-Kriti. The quality exceeded my expectations, and the artist even reached out personally to thank me for my purchase."</p>
+              <div>
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="John Doe" class="w-16 h-16 rounded-full mx-auto mb-3 object-cover">
+                <h5 class="font-medium">John Doe</h5>
+                <p class="text-gray-400 text-sm">Art Collector, London</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="carousel-item">
+            <div class="max-w-3xl mx-auto text-center px-4 py-8">
+              <p class="text-xl italic mb-6">"As a gallery owner, I've discovered several emerging artists through Kala-Kriti. The platform has become an essential resource for finding fresh talent with unique perspectives."</p>
+              <div>
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Mary Johnson" class="w-16 h-16 rounded-full mx-auto mb-3 object-cover">
+                <h5 class="font-medium">Mary Johnson</h5>
+                <p class="text-gray-400 text-sm">Gallery Owner, Paris</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="carousel-item">
+            <div class="max-w-3xl mx-auto text-center px-4 py-8">
+              <p class="text-xl italic mb-6">"The seamless buying experience and secure shipping made purchasing my first original artwork stress-free. I'm already planning my next acquisition!"</p>
+              <div>
+                <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="Robert Smith" class="w-16 h-16 rounded-full mx-auto mb-3 object-cover">
+                <h5 class="font-medium">Robert Smith</h5>
+                <p class="text-gray-400 text-sm">First-time Collector, Sydney</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Services Section -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12">
+        <div class="mb-4">
+          <img src="/logo-black.png" alt="Kala-Kriti Logo" class="h-24 mx-auto">
+        </div>
+        <h2 class="text-3xl font-semibold mb-3">Elevate Your Art Experience</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto">Discover how Kala-Kriti connects artists with art lovers around the world.</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+        <!-- Service 1 -->
+        <div class="bg-gray-50 rounded-lg p-8 text-center hover:shadow-md transition-shadow duration-300">
+          <div class="text-4xl mb-4 text-gray-800 flex justify-center">
+            <i class="fas fa-paint-brush"></i>
+          </div>
+          <h3 class="text-xl font-medium mb-3">For Artists</h3>
+          <p class="text-gray-600">Showcase your work to a global audience, connect with collectors, and grow your artistic career.</p>
+        </div>
+        
+        <!-- Service 2 -->
+        <div class="bg-gray-50 rounded-lg p-8 text-center hover:shadow-md transition-shadow duration-300">
+          <div class="text-4xl mb-4 text-gray-800 flex justify-center">
+            <i class="fas fa-search"></i>
+          </div>
+          <h3 class="text-xl font-medium mb-3">For Collectors</h3>
+          <p class="text-gray-600">Discover unique artworks from emerging and established artists, with secure transactions and global shipping.</p>
+        </div>
+        
+        <!-- Service 3 -->
+        <div class="bg-gray-50 rounded-lg p-8 text-center hover:shadow-md transition-shadow duration-300">
+          <div class="text-4xl mb-4 text-gray-800 flex justify-center">
+            <i class="fas fa-building"></i>
+          </div>
+          <h3 class="text-xl font-medium mb-3">For Institutions</h3>
+          <p class="text-gray-600">Find new talent, organize exhibitions, and collaborate with our global network of creative professionals.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- CTA Section -->
+  <section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto bg-white p-8 md:p-12 rounded-lg shadow-sm text-center">
+        <h2 class="text-3xl font-semibold mb-4">Ready to Start Your Art Journey?</h2>
+        <p class="text-gray-600 mb-8 max-w-2xl mx-auto">Whether you're looking to buy a unique piece or showcase your creative work, Kala-Kriti offers the perfect platform to connect with the art world.</p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/buy" class="px-6 py-3 bg-black text-white font-medium rounded-md hover:bg-gray-800 transition-colors duration-200">Start Collecting</a>
+          <a href="/sell" class="px-6 py-3 bg-white text-black font-medium border border-black rounded-md hover:bg-gray-100 transition-colors duration-200">Start Selling</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  <%- include('partials/footer') %>
+  
+  <!-- Common Scripts -->
+  <%- include('partials/base-scripts') %>
+</body>
+</html> 

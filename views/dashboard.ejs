@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Kala-Kriti | Artist Dashboard</title>
+  <%- include('partials/base-head') %>
+  <style>
+    /* Dashboard-specific styles that complement Tailwind */
+    .sidebar-link.active {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+  <div class="flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <div class="w-64 bg-gray-900 text-white flex-shrink-0 hidden md:block">
+      <div class="p-6 text-center">
+        <a href="/">
+          <img src="/logo-white.png" alt="Kala-Kriti" class="h-12 mx-auto mb-4">
+        </a>
+        <div class="mt-4 mb-8">
+          <img src="<%= user.profilePicture || '/uploads/profile/default.jpg' %>" alt="Profile Picture" class="w-24 h-24 rounded-full mx-auto object-cover border-2 border-gray-700">
+          <h3 id="username-field" class="mt-3 font-medium text-lg"><%= user.fullName || user.username %></h3>
+          <p class="text-gray-400 text-sm" id="role-field"><%= user.role.charAt(0).toUpperCase() + user.role.slice(1) %></p>
+        </div>
+        
+        <div class="flex flex-col space-y-2">
+          <a href="/" class="px-4 py-2 bg-gray-800 text-white rounded-md text-sm hover:bg-gray-700 transition-colors duration-200 flex items-center justify-center">
+            <i class="fa fa-home mr-2"></i>
+            <span>Home</span>
+          </a>
+          <a href="/auth/logout" class="px-4 py-2 bg-red-600 text-white rounded-md text-sm hover:bg-red-700 transition-colors duration-200 flex items-center justify-center">
+            <i class="fa fa-right-from-bracket mr-2"></i>
+            <span>Logout</span>
+          </a>
+        </div>
+      </div>
+      
+      <nav class="mt-2 px-4">
+        <ul class="space-y-2">
+          <li>
+            <button onclick="showSection('overview')" class="sidebar-link w-full text-left px-4 py-3 rounded-md flex items-center text-gray-300 hover:bg-gray-800 hover:text-white transition-colors duration-200">
+              <i class="fas fa-tachometer-alt w-5"></i>
+              <span class="ml-3">Overview</span>
+            </button>
+          </li>
+          <li>
+            <button onclick="showSection('artworks')" class="sidebar-link w-full text-left px-4 py-3 rounded-md flex items-center text-gray-300 hover:bg-gray-800 hover:text-white transition-colors duration-200">
+              <i class="fas fa-palette w-5"></i>
+              <span class="ml-3">My Artworks</span>
+            </button>
+          </li>
+          <li>
+            <button onclick="showSection('orders')" class="sidebar-link w-full text-left px-4 py-3 rounded-md flex items-center text-gray-300 hover:bg-gray-800 hover:text-white transition-colors duration-200">
+              <i class="fas fa-shopping-bag w-5"></i>
+              <span class="ml-3">My Orders</span>
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    
+    <!-- Mobile sidebar toggle -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-gray-900 text-white p-4 flex justify-around z-10">
+      <button onclick="showSection('overview')" class="text-center">
+        <i class="fas fa-tachometer-alt text-xl"></i>
+        <span class="block text-xs mt-1">Overview</span>
+      </button>
+      <button onclick="showSection('artworks')" class="text-center">
+        <i class="fas fa-palette text-xl"></i>
+        <span class="block text-xs mt-1">Artworks</span>
+      </button>
+      <button onclick="showSection('orders')" class="text-center">
+        <i class="fas fa-shopping-bag text-xl"></i>
+        <span class="block text-xs mt-1">Orders</span>
+      </button>
+    </div>
+    
+    <!-- Main content -->
+    <div class="flex-1 overflow-y-auto bg-gray-50">
+      <!-- Dashboard header -->
+      <header class="bg-white shadow-sm">
+        <div class="px-6 py-4">
+          <div class="flex items-center justify-between">
+            <h1 class="text-2xl font-semibold text-gray-900">Artist Dashboard</h1>
+            <div class="md:hidden">
+              <a href="/" class="text-gray-600">
+                <img src="/logo-black.png" alt="Kala-Kriti" class="h-8">
+              </a>
+            </div>
+          </div>
+        </div>
+      </header>
+      
+      <!-- Dashboard content -->
+      <div class="container mx-auto px-4 py-8 pb-20 md:pb-8">
+        <!-- Overview Section -->
+        <div id="overview" class="section">
+          <div class="mb-8">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-4">Artist Profile Overview</h2>
+            <div class="bg-white rounded-lg shadow-sm p-6">
+              <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
+                <div class="w-32 h-32">
+                  <img id="profile-overview-pic" src="<%= user.profilePicture || '/uploads/profile/default.jpg' %>" alt="Profile Picture" class="rounded-full w-full h-full object-cover border-2 border-gray-200">
+                </div>
+                <div class="flex-1">
+                  <h3 class="text-2xl font-medium mb-2"><%= user.fullName || user.username %></h3>
+                  <p class="text-gray-500 mb-4"><%= user.role.charAt(0).toUpperCase() + user.role.slice(1) %></p>
+                  
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                      <p class="text-sm text-gray-500">Username</p>
+                      <p><%= user.username %></p>
+                    </div>
+                    <div>
+                      <p class="text-sm text-gray-500">Email</p>
+                      <p><%= user.email %></p>
+                    </div>
+                    <div>
+                      <p class="text-sm text-gray-500">Phone Number</p>
+                      <p><%= user.phoneNumber || 'Not provided' %></p>
+                    </div>
+                    <div>
+                      <p class="text-sm text-gray-500">Personal Website</p>
+                      <p>
+                        <% if (user.socialMedia && user.socialMedia.website) { %>
+                          <a href="<%= user.socialMedia.website %>" target="_blank" class="text-blue-600 hover:underline">
+                            <i class="fas fa-globe mr-1"></i><%= user.socialMedia.website %>
+                          </a>
+                        <% } else { %>
+                          Not provided
+                        <% } %>
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div class="mb-6">
+                    <p class="text-sm text-gray-500 mb-2">Bio</p>
+                    <p class="text-gray-700"><%= user.bio || 'No bio information provided.' %></p>
+                  </div>
+                  
+                  <!-- Social Media Links -->
+                  <div>
+                    <p class="text-sm text-gray-500 mb-2">Social Media</p>
+                    <div class="flex flex-wrap gap-4">
+                      <% if (user.socialMedia && user.socialMedia.instagram) { %>
+                        <a href="https://instagram.com/<%= user.socialMedia.instagram %>" target="_blank" class="flex items-center text-gray-700 hover:text-pink-600">
+                          <i class="fab fa-instagram text-xl mr-1"></i>
+                          <span>@<%= user.socialMedia.instagram %></span>
+                        </a>
+                      <% } %>
+                      
+                      <% if (user.socialMedia && user.socialMedia.twitter) { %>
+                        <a href="https://twitter.com/<%= user.socialMedia.twitter %>" target="_blank" class="flex items-center text-gray-700 hover:text-blue-500">
+                          <i class="fab fa-twitter text-xl mr-1"></i>
+                          <span>@<%= user.socialMedia.twitter %></span>
+                        </a>
+                      <% } %>
+                      
+                      <% if (user.socialMedia && user.socialMedia.facebook) { %>
+                        <a href="<%= user.socialMedia.facebook.startsWith('http') ? user.socialMedia.facebook : 'https://facebook.com/' + user.socialMedia.facebook %>" target="_blank" class="flex items-center text-gray-700 hover:text-blue-700">
+                          <i class="fab fa-facebook text-xl mr-1"></i>
+                          <span><%= user.socialMedia.facebook %></span>
+                        </a>
+                      <% } %>
+                      
+                      <% if (!user.socialMedia || (!user.socialMedia.instagram && !user.socialMedia.twitter && !user.socialMedia.facebook)) { %>
+                        <span class="text-gray-500">No social media accounts provided.</span>
+                      <% } %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- User Activity Summary -->
+          <div class="mb-8">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-4">Activity Summary</h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div class="bg-white rounded-lg shadow-sm p-6">
+                <div class="flex items-center">
+                  <div class="p-3 rounded-full bg-blue-100 text-blue-500 mr-4">
+                    <i class="fas fa-palette text-xl"></i>
+                  </div>
+                  <div>
+                    <h4 class="text-lg font-medium">My Artworks</h4>
+                    <p class="text-2xl font-bold" id="artwork-count">...</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg shadow-sm p-6">
+                <div class="flex items-center">
+                  <div class="p-3 rounded-full bg-green-100 text-green-500 mr-4">
+                    <i class="fas fa-paint-brush text-xl"></i>
+                  </div>
+                  <div>
+                    <h4 class="text-lg font-medium">Art Categories</h4>
+                    <p class="text-2xl font-bold" id="category-count">...</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg shadow-sm p-6">
+                <div class="flex items-center">
+                  <div class="p-3 rounded-full bg-yellow-100 text-yellow-500 mr-4">
+                    <i class="fas fa-shopping-bag text-xl"></i>
+                  </div>
+                  <div>
+                    <h4 class="text-lg font-medium">My Orders</h4>
+                    <p class="text-2xl font-bold" id="order-count">...</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg shadow-sm p-6">
+                <div class="flex items-center">
+                  <div class="p-3 rounded-full bg-purple-100 text-purple-500 mr-4">
+                    <i class="fas fa-user-circle text-xl"></i>
+                  </div>
+                  <div>
+                    <h4 class="text-lg font-medium">Account Status</h4>
+                    <p class="text-lg font-medium text-green-500">Active</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Quick Actions -->
+          <div class="mb-8">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <a href="/sell" class="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow duration-300 flex items-center">
+                <div class="p-3 rounded-full bg-black text-white mr-4">
+                  <i class="fas fa-plus"></i>
+                </div>
+                <div>
+                  <h4 class="text-lg font-medium">List New Artwork</h4>
+                  <p class="text-sm text-gray-500">Upload and sell your latest creations</p>
+                </div>
+              </a>
+              
+              <a href="/artworks" class="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow duration-300 flex items-center">
+                <div class="p-3 rounded-full bg-black text-white mr-4">
+                  <i class="fas fa-search"></i>
+                </div>
+                <div>
+                  <h4 class="text-lg font-medium">Browse Gallery</h4>
+                  <p class="text-sm text-gray-500">Explore artwork from other artists</p>
+                </div>
+              </a>
+              
+              <a href="#" onclick="event.preventDefault(); showSection('orders');" class="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow duration-300 flex items-center">
+                <div class="p-3 rounded-full bg-black text-white mr-4">
+                  <i class="fas fa-shopping-bag"></i>
+                </div>
+                <div>
+                  <h4 class="text-lg font-medium">View Orders</h4>
+                  <p class="text-sm text-gray-500">Check status of your purchases</p>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Artworks Section -->
+        <div id="artworks" class="section hidden">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-semibold text-gray-900">Your Artworks</h2>
+            <a href="/sell" class="px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors duration-200 flex items-center">
+              <i class="fas fa-plus mr-2"></i>
+              <span>Add New</span>
+            </a>
+          </div>
+          
+          <div id="user-artworks-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Artwork items will be loaded here -->
+            <div class="col-span-full text-center py-12 loading-indicator">
+              <div class="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-900"></div>
+              <p class="mt-2 text-gray-600">Loading your artworks...</p>
+            </div>
+          </div>
+          
+          <div id="no-artworks-message" class="hidden bg-white rounded-lg shadow-sm p-6 text-center">
+            <i class="fas fa-palette text-5xl text-gray-400 mb-4"></i>
+            <h3 class="text-xl font-medium mb-2">No Artworks Yet</h3>
+            <p class="text-gray-600 mb-4">You haven't listed any artworks for sale yet.</p>
+            <a href="/sell" class="inline-block px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors duration-200">
+              List Your First Artwork
+            </a>
+          </div>
+        </div>
+        
+        <!-- Orders Section -->
+        <div id="orders" class="section hidden">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-semibold text-gray-900">Your Orders</h2>
+            <a href="/artworks" class="px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors duration-200 flex items-center">
+              <i class="fas fa-shopping-cart mr-2"></i>
+              <span>Shop More</span>
+            </a>
+          </div>
+          
+          <div id="user-orders-container" class="space-y-6">
+            <!-- Orders will be loaded here -->
+            <div class="text-center py-12 loading-indicator">
+              <div class="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-900"></div>
+              <p class="mt-2 text-gray-600">Loading your orders...</p>
+            </div>
+          </div>
+          
+          <div id="no-orders-message" class="hidden bg-white rounded-lg shadow-sm p-6 text-center">
+            <i class="fas fa-shopping-bag text-5xl text-gray-400 mb-4"></i>
+            <h3 class="text-xl font-medium mb-2">No Orders Yet</h3>
+            <p class="text-gray-600 mb-4">You haven't placed any orders yet.</p>
+            <a href="/artworks" class="inline-block px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors duration-200">
+              Browse Gallery
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Include base scripts -->
+  <%- include('partials/base-scripts') %>
+  
+  <!-- Dashboard specific scripts -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Set the default active section
+      showSection('overview');
+      
+      // Load user profile data
+      loadUserProfile();
+    });
+
+    function showSection(sectionId) {
+      // Hide all sections
+      const sections = document.querySelectorAll('.section');
+      sections.forEach(section => {
+        section.classList.add('hidden');
+      });
+      
+      // Show the selected section
+      document.getElementById(sectionId).classList.remove('hidden');
+      
+      // Update active state on sidebar links
+      const sidebarLinks = document.querySelectorAll('.sidebar-link');
+      sidebarLinks.forEach(link => {
+        link.classList.remove('active', 'bg-gray-800');
+      });
+      
+      // Add active class to the clicked sidebar link
+      const activeLink = document.querySelector(`.sidebar-link[onclick="showSection('${sectionId}')"]`);
+      if (activeLink) {
+        activeLink.classList.add('active', 'bg-gray-800');
+      }
+      
+      // Load artworks if the artworks section is selected
+      if (sectionId === 'artworks') {
+        loadUserArtworks();
+      }
+      
+      // Update activity summary on the overview section
+      if (sectionId === 'overview') {
+        updateActivitySummary();
+      }
+      
+      // Load orders if the orders section is selected
+      if (sectionId === 'orders') {
+        loadUserOrders();
+      }
+    }
+
+    function loadUserProfile() {
+      fetch('/auth/me')
+        .then(response => response.json())
+        .then(user => {
+          // Update profile display in sidebar
+          document.getElementById('username-field').textContent = user.fullName || user.username;
+          document.getElementById('role-field').textContent = user.role.charAt(0).toUpperCase() + user.role.slice(1);
+          
+          // Update profile image
+          const profileImage = document.querySelector('.mt-4.mb-8 img');
+          if (profileImage) {
+            profileImage.src = user.profilePicture || '/uploads/profile/default.jpg';
+          }
+          
+          // Update profile overview image
+          const overviewProfilePic = document.getElementById('profile-overview-pic');
+          if (overviewProfilePic) {
+            overviewProfilePic.src = user.profilePicture || '/uploads/profile/default.jpg';
+          }
+          
+          // Log user data to console for debugging
+          console.log('User profile data:', {
+            username: user.username,
+            fullName: user.fullName,
+            email: user.email,
+            phoneNumber: user.phoneNumber,
+            bio: user.bio,
+            website: user.socialMedia && user.socialMedia.website,
+            instagram: user.socialMedia && user.socialMedia.instagram,
+            twitter: user.socialMedia && user.socialMedia.twitter,
+            facebook: user.socialMedia && user.socialMedia.facebook
+          });
+          
+          // Update activity summary
+          updateActivitySummary();
+        })
+        .catch(error => console.error('Error loading profile:', error));
+    }
+    
+    function updateActivitySummary() {
+      // Fetch artwork data for statistics
+      fetch('/artworks/my-artworks')
+        .then(response => response.json())
+        .then(artworks => {
+          // Update artwork count
+          document.getElementById('artwork-count').textContent = artworks.length;
+          
+          // Get unique categories
+          const categories = [...new Set(artworks.map(art => art.category))];
+          document.getElementById('category-count').textContent = categories.length || 0;
+        })
+        .catch(error => {
+          console.error('Error loading artwork statistics:', error);
+          document.getElementById('artwork-count').textContent = '0';
+          document.getElementById('category-count').textContent = '0';
+        });
+        
+      // Fetch order data for statistics
+      fetch('/checkout/my-orders')
+        .then(response => response.json())
+        .then(orders => {
+          // Update order count
+          document.getElementById('order-count').textContent = orders.length;
+        })
+        .catch(error => {
+          console.error('Error loading order statistics:', error);
+          document.getElementById('order-count').textContent = '0';
+        });
+    }
+    
+    function loadUserArtworks() {
+      const container = document.getElementById('user-artworks-container');
+      const loadingIndicator = container.querySelector('.loading-indicator');
+      const noArtworksMessage = document.getElementById('no-artworks-message');
+      
+      fetch('/artworks/my-artworks')
+        .then(response => response.json())
+        .then(artworks => {
+          // Hide loading indicator
+          if (loadingIndicator) {
+            loadingIndicator.remove();
+          }
+          
+          if (artworks.length === 0) {
+            // Show no artworks message
+            noArtworksMessage.classList.remove('hidden');
+          } else {
+            // Hide no artworks message
+            noArtworksMessage.classList.add('hidden');
+            
+            // Render artworks
+            const artworksHTML = artworks.map(artwork => `
+              <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+                <div class="relative group">
+                  <img src="${artwork.imageUrl}" alt="${artwork.title}" class="w-full h-48 object-cover">
+                  <div class="absolute inset-0 bg-black bg-opacity-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-end p-4">
+                    <div class="flex space-x-2">
+                      <a href="/sell/edit/${artwork._id}" class="bg-white p-2 rounded-full text-gray-800 hover:text-black transition-colors">
+                        <i class="fas fa-edit"></i>
+                      </a>
+                      <button onclick="deleteArtwork('${artwork._id}')" class="bg-white p-2 rounded-full text-gray-800 hover:text-black transition-colors">
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                      <a href="/artworks/${artwork._id}" class="bg-white p-2 rounded-full text-gray-800 hover:text-black transition-colors">
+                        <i class="fas fa-eye"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="p-4">
+                  <h3 class="font-medium text-gray-900">${artwork.title}</h3>
+                  <p class="text-sm text-gray-500 mb-1">${artwork.category}</p>
+                  <div class="flex justify-between items-center mt-2">
+                    <span class="font-bold">$${artwork.price.toLocaleString()}</span>
+                    <span class="text-sm text-gray-500">${formatDate(artwork.createdAt)}</span>
+                  </div>
+                </div>
+              </div>
+            `).join('');
+            
+            container.innerHTML = artworksHTML;
+          }
+        })
+        .catch(error => {
+          console.error('Error loading artworks:', error);
+          container.innerHTML = `
+            <div class="col-span-full text-center py-12">
+              <i class="fas fa-exclamation-circle text-red-500 text-4xl mb-4"></i>
+              <p class="text-gray-700">Failed to load your artworks. Please try again later.</p>
+            </div>
+          `;
+        });
+    }
+    
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+    }
+    
+    function deleteArtwork(artworkId) {
+      if (confirm('Are you sure you want to delete this artwork? This cannot be undone.')) {
+        fetch(`/artworks/${artworkId}`, {
+          method: 'DELETE'
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert('Artwork deleted successfully');
+            loadUserArtworks(); // Reload the artworks list
+            // Update activity summary stats
+            updateActivitySummary();
+          } else {
+            alert('Error: ' + (data.error || 'Failed to delete artwork'));
+          }
+        })
+        .catch(error => alert('Error deleting artwork'));
+      }
+    }
+    
+    function loadUserOrders() {
+      const container = document.getElementById('user-orders-container');
+      const loadingIndicator = container.querySelector('.loading-indicator');
+      const noOrdersMessage = document.getElementById('no-orders-message');
+      
+      fetch('/checkout/my-orders')
+        .then(response => response.json())
+        .then(orders => {
+          // Hide loading indicator
+          if (loadingIndicator) {
+            loadingIndicator.remove();
+          }
+          
+          if (orders.length === 0) {
+            // Show no orders message
+            noOrdersMessage.classList.remove('hidden');
+          } else {
+            // Hide no orders message
+            noOrdersMessage.classList.add('hidden');
+            
+            // Clear container
+            container.innerHTML = '';
+            
+            // Render orders
+            orders.forEach(order => {
+              // Generate order card
+              const orderDate = new Date(order.createdAt).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              });
+              
+              // Create status badge
+              let statusBadge = '';
+              switch(order.status) {
+                case 'pending':
+                  statusBadge = '<span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">Pending</span>';
+                  break;
+                case 'processing':
+                  statusBadge = '<span class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">Processing</span>';
+                  break;
+                case 'shipped':
+                  statusBadge = '<span class="px-2 py-1 text-xs rounded-full bg-purple-100 text-purple-800">Shipped</span>';
+                  break;
+                case 'delivered':
+                  statusBadge = '<span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Delivered</span>';
+                  break;
+                case 'cancelled':
+                  statusBadge = '<span class="px-2 py-1 text-xs rounded-full bg-red-100 text-red-800">Cancelled</span>';
+                  break;
+                default:
+                  statusBadge = '<span class="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-800">Unknown</span>';
+              }
+              
+              // Create order card
+              const orderCard = document.createElement('div');
+              orderCard.className = 'bg-white rounded-lg shadow-sm overflow-hidden';
+              
+              // Get order number from ID
+              const orderNumber = `KK-${new Date(order.createdAt).getFullYear()}-${order._id.toString().slice(-6).toUpperCase()}`;
+              
+              orderCard.innerHTML = `
+                <div class="border-b border-gray-100">
+                  <div class="p-4 flex justify-between items-center">
+                    <div>
+                      <h3 class="font-medium mb-1">Order #${orderNumber}</h3>
+                      <p class="text-sm text-gray-500">${orderDate}</p>
+                    </div>
+                    <div class="flex items-center">
+                      ${statusBadge}
+                      <span class="ml-4 font-medium">$${order.totalPrice.toFixed(2)}</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="px-4 py-3">
+                  <h4 class="text-sm font-medium text-gray-700 mb-2">Items</h4>
+                  <div class="space-y-2">
+                    ${order.items.map(item => `
+                      <div class="flex justify-between text-sm">
+                        <span>${item.title} ${item.quantity > 1 ? `(${item.quantity})` : ''}</span>
+                        <span>$${(item.price * item.quantity).toFixed(2)}</span>
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+                
+                <div class="bg-gray-50 px-4 py-3 flex justify-between items-center">
+                  <div>
+                    <span class="text-sm text-gray-600">Payment: </span>
+                    <span class="text-sm font-medium">
+                      ${order.paymentMethod === 'credit_card' ? 'Credit Card' : 
+                        order.paymentMethod === 'paypal' ? 'PayPal' : 
+                        order.paymentMethod === 'bank_transfer' ? 'Bank Transfer' : 
+                        order.paymentMethod}
+                    </span>
+                  </div>
+                  <a href="/checkout/confirmation/${order._id}" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                    Order Details
+                  </a>
+                </div>
+              `;
+              
+              container.appendChild(orderCard);
+            });
+          }
+        })
+        .catch(error => {
+          console.error('Error loading orders:', error);
+          container.innerHTML = `
+            <div class="text-center py-12">
+              <i class="fas fa-exclamation-circle text-red-500 text-4xl mb-4"></i>
+              <p class="text-gray-700">Failed to load your orders. Please try again later.</p>
+            </div>
+          `;
+        });
+    }
+  </script>
+</body>
+</html>

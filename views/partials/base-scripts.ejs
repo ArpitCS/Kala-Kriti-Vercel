@@ -1,0 +1,32 @@
+<!-- Common scripts for all pages -->
+<!-- Bootstrap JS and Dependencies -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+<!-- Cart functionality -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Update cart count in header
+    function updateCartCount() {
+      const cartCountElement = document.getElementById('cart-count');
+      if (cartCountElement) {
+        // Get cart data from localStorage
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const count = cart.length;
+        cartCountElement.textContent = count;
+        
+        // Hide badge if count is 0
+        if (count === 0) {
+          cartCountElement.style.display = 'none';
+        } else {
+          cartCountElement.style.display = 'flex';
+        }
+      }
+    }
+    
+    // Update cart count on page load
+    updateCartCount();
+    
+    // Make the function globally available
+    window.updateCartCount = updateCartCount;
+  });
+</script> 

@@ -1,0 +1,48 @@
+<!-- Header with Tailwind CSS -->
+<header class="bg-white shadow-sm">
+  <div class="container mx-auto px-4 py-4">
+    <!-- Main navigation container with better responsive handling -->
+    <div class="flex flex-col md:flex-row items-center justify-between">
+      <!-- Left navigation -->
+      <nav class="flex items-center space-x-4 md:space-x-6 overflow-x-auto max-w-full py-2">
+        <a href="/" class="text-gray-700 hover:text-gray-900 text-sm font-medium whitespace-nowrap transition-colors duration-200 <%= locals.page === 'home' ? 'border-b-2 border-black' : '' %>">Home</a>
+        <a href="/gallery" class="text-gray-700 hover:text-gray-900 text-sm font-medium whitespace-nowrap transition-colors duration-200 <%= locals.page === 'gallery' ? 'border-b-2 border-black' : '' %>">Gallery</a>
+        <a href="/artists" class="text-gray-700 hover:text-gray-900 text-sm font-medium whitespace-nowrap transition-colors duration-200 <%= locals.page === 'artists' ? 'border-b-2 border-black' : '' %>">Artists</a>
+        <a href="/events" class="text-gray-700 hover:text-gray-900 text-sm font-medium whitespace-nowrap transition-colors duration-200 <%= locals.page === 'events' ? 'border-b-2 border-black' : '' %>">Events</a>
+        <a href="/news" class="text-gray-700 hover:text-gray-900 text-sm font-medium whitespace-nowrap transition-colors duration-200 <%= locals.page === 'news' ? 'border-b-2 border-black' : '' %>">News</a>
+      </nav>
+      
+      <!-- Logo center -->
+      <div class="flex justify-center my-2 md:my-0">
+        <a href="/" class="flex items-center">
+          <img src="/logo-black.png" alt="Kala-Kriti" class="h-16 md:h-24 w-auto" />
+        </a>
+      </div>
+      
+      <!-- Right navigation -->
+      <nav class="flex flex-wrap items-center justify-end space-x-4 md:space-x-6 py-2 max-w-full overflow-hidden">
+        <a href="/buy" class="text-gray-700 hover:text-gray-900 text-sm font-medium whitespace-nowrap transition-colors duration-200 <%= locals.page === 'buy' ? 'border-b-2 border-black' : '' %>">Buy</a>
+        <a href="/sell" class="text-gray-700 hover:text-gray-900 text-sm font-medium whitespace-nowrap transition-colors duration-200 <%= locals.page === 'sell' ? 'border-b-2 border-black' : '' %>">Sell</a>
+        <a href="/contact" class="text-gray-700 hover:text-gray-900 text-sm font-medium whitespace-nowrap transition-colors duration-200 <%= locals.page === 'contact' ? 'border-b-2 border-black' : '' %>">Contact</a>
+        <a href="/portfolio" class="text-gray-700 hover:text-gray-900 text-sm font-medium whitespace-nowrap transition-colors duration-200 <%= locals.page === 'portfolio' ? 'border-b-2 border-black' : '' %>">Portfolio</a>
+        
+        <!-- User actions -->
+        <div class="flex items-center space-x-4">
+          <a href="/cart" class="text-gray-700 hover:text-gray-900 relative" title="Cart">
+            <i class="fa-solid fa-shopping-cart"></i>
+            <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+          </a>
+          <a href="/wishlist" class="text-gray-700 hover:text-gray-900" title="Wishlist">
+            <i class="fa-solid fa-heart"></i>
+          </a>
+          <a href="/login" class="text-gray-700 hover:text-gray-900" title="Account">
+            <i class="fa-regular fa-user"></i>
+          </a>
+          <a href="/auth/logout" class="text-gray-700 hover:text-gray-900" title="Logout">
+            <i class="fa-solid fa-right-from-bracket"></i>
+          </a>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>

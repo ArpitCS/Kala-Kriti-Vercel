@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Kala-Kriti | Artworks</title>
+  <%- include('partials/base-head') %>
+</head>
+<body class="bg-gray-50">
+  <!-- Set the active page for the header -->
+  <% locals.page = 'buy' %>
+  
+  <!-- Header -->
+  <%- include('partials/header') %>
+  
+  <!-- Buy Page Header Section -->
+  <section class="bg-white py-12">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto text-center">
+        <h1 class="text-4xl md:text-5xl font-semibold mb-4">Buy Art</h1>
+        <p class="text-gray-600 text-lg">
+          Browse our curated collection of exceptional artworks available for purchase.
+          Each piece has been carefully selected for its artistic merit and uniqueness.
+        </p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Search Section -->
+  <section class="bg-white border-t border-b border-gray-100 py-6">
+    <div class="container mx-auto px-4">
+      <div class="max-w-3xl mx-auto">
+        <div class="flex items-center bg-gray-50 rounded-full px-6 py-2 shadow-sm">
+          <input type="text" id="search-input" placeholder="Search by artist, title, style, or medium..." 
+                 class="w-full bg-transparent border-0 focus:outline-none px-2 py-2 text-gray-700">
+          <button id="search-button" class="bg-black text-white rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0 ml-2" onclick="searchArtworks()">
+            <i class="fas fa-search"></i>
+          </button>
+          <button id="clear-button" class="bg-red-500 text-white rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0 ml-2" onclick="clearSearch()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Filter Section -->
+  <section class="bg-white py-6">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="/artworks" class="px-4 py-2 <%= !locals.activeCategory || locals.activeCategory === 'all' ? 'bg-gray-800 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-800' %> rounded-md text-sm transition-colors duration-200">All</a>
+        <a href="/artworks?category=painting" class="px-4 py-2 <%= locals.activeCategory === 'painting' ? 'bg-gray-800 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-800' %> rounded-md text-sm transition-colors duration-200">Painting</a>
+        <a href="/artworks?category=sculpture" class="px-4 py-2 <%= locals.activeCategory === 'sculpture' ? 'bg-gray-800 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-800' %> rounded-md text-sm transition-colors duration-200">Sculpture</a>
+        <a href="/artworks?category=photography" class="px-4 py-2 <%= locals.activeCategory === 'photography' ? 'bg-gray-800 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-800' %> rounded-md text-sm transition-colors duration-200">Photography</a>
+        <a href="/artworks?category=digital-art" class="px-4 py-2 <%= locals.activeCategory === 'digital-art' ? 'bg-gray-800 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-800' %> rounded-md text-sm transition-colors duration-200">Digital Art</a>
+        <a href="/artworks?category=mixed-media" class="px-4 py-2 <%= locals.activeCategory === 'mixed-media' ? 'bg-gray-800 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-800' %> rounded-md text-sm transition-colors duration-200">Mixed Media</a>
+        <a href="/artworks?category=other" class="px-4 py-2 <%= locals.activeCategory === 'other' ? 'bg-gray-800 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-800' %> rounded-md text-sm transition-colors duration-200">Other</a>
+      </div>
+      
+      <!-- Simple Sort Options -->
+      <div class="flex justify-center mt-4">
+        <div class="inline-flex bg-gray-100 rounded-md p-1">
+          <a href="/artworks<%= locals.activeCategory && locals.activeCategory !== 'all' ? '?category=' + locals.activeCategory : '' %>" 
+             class="px-3 py-1 rounded-md <%= !locals.sortBy || locals.sortBy === 'newest' ? 'bg-white shadow-sm' : '' %>">
+            Newest
+          </a>
+          <a href="/artworks?<%= locals.activeCategory && locals.activeCategory !== 'all' ? 'category=' + locals.activeCategory + '&' : '' %>sortBy=price-low" 
+             class="px-3 py-1 rounded-md <%= locals.sortBy === 'price-low' ? 'bg-white shadow-sm' : '' %>">
+            Price: Low-High
+          </a>
+          <a href="/artworks?<%= locals.activeCategory && locals.activeCategory !== 'all' ? 'category=' + locals.activeCategory + '&' : '' %>sortBy=price-high" 
+             class="px-3 py-1 rounded-md <%= locals.sortBy === 'price-high' ? 'bg-white shadow-sm' : '' %>">
+            Price: High-Low
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Artwork Gallery -->
+  <section class="py-12">
+    <div class="container mx-auto px-4">
+      <% if (locals.error) { %>
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6" role="alert">
+          <p><%= error %></p>
+        </div>
+      <% } %>
+      
+      <div id="art-gallery" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 px-4">
+        <% if (locals.artworks && artworks.length > 0) { %>
+          <% artworks.forEach(art => { %>
+            <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 group">
+              <div class="relative">
+                <a href="/artworks/<%= art._id %>" class="block">
+                  <img src="<%= art.imageUrl %>" alt="<%= art.title %>" class="w-full h-80 object-cover">
+                </a>
+              </div>
+              <div class="p-3">
+                <h3 class="text-2xl font-medium text-gray-900 mb-1 truncate"><%= art.title %></h3>
+                <p class="text-gray-600 mb-4">By <%= art.artist %></p>
+                <div class="flex justify-between items-center mb-5">
+                  <p class="text-3xl font-bold text-gray-900">$<%= art.price.toLocaleString() %></p>
+                  <span class="text-sm py-1 px-3 bg-gray-100 text-gray-700 rounded-full"><%= art.category %></span>
+                </div>
+                <div class="flex flex-col space-x-2">
+                  <button class="flex-1 wishlist-btn bg-white border border-gray-300 py-1 px-1 mb-2 rounded-full text-gray-800 hover:text-red-500 hover:border-red-500 transition-all" data-id="<%= art._id %>" onclick="event.preventDefault(); event.stopPropagation(); toggleWishlist('<%= art._id %>', this);">
+                    <i class="fa-regular fa-heart mr-2"></i> Wishlist
+                  </button>
+                  <button class="flex-1 cart-btn bg-black text-white py-1 px-4 rounded-full hover:bg-gray-800 transition-all" data-id="<%= art._id %>" onclick="event.preventDefault(); event.stopPropagation(); addToCart('<%= art._id %>', this);">
+                    <i class="fa-solid fa-cart-plus mr-2"></i> Add to Cart
+                  </button>
+                </div>
+              </div>
+            </div>
+          <% }); %>
+        <% } else { %>
+          <div class="col-span-full text-center py-12">
+            <p class="text-lg text-gray-500">No artworks found. Try a different category or check back later.</p>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  <%- include('partials/footer') %>
+  
+  <!-- Common Scripts -->
+  <%- include('partials/base-scripts') %>
+  
+  <script>
+    function searchArtworks() {
+      const searchTerm = document.getElementById('search-input').value.trim();
+      if (searchTerm) {
+        window.location.href = `/artworks?search=${encodeURIComponent(searchTerm)}`;
+      }
+    }
+    
+    function clearSearch() {
+      document.getElementById('search-input').value = '';
+      window.location.href = '/artworks';
+    }
+    
+    function toggleWishlist(artId, buttonElement) {
+      // Only proceed if user is logged in
+      if (!isUserLoggedIn()) {
+        showNotification('Please log in to add items to your wishlist', 'info');
+        return false;
+      }
+      
+      // Get the artwork details for notification
+      const artworkElement = buttonElement.closest('.group');
+      const title = artworkElement.querySelector('h3').textContent;
+      
+      // Check current state (in wishlist or not)
+      const isCurrentlyInWishlist = buttonElement.classList.contains('text-red-500');
+      
+      // Endpoint and method based on current state
+      const endpoint = isCurrentlyInWishlist 
+        ? `/wishlist/remove/${artId}` 
+        : `/wishlist/add/${artId}`;
+      const method = isCurrentlyInWishlist ? 'DELETE' : 'POST';
+      
+      // Send request to add/remove from favorites
+      fetch(endpoint, {
+        method: method,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          if (isCurrentlyInWishlist) {
+            // Was in wishlist, now removed
+            showNotification(`${title} has been removed from your wishlist`, 'info');
+            buttonElement.innerHTML = '<i class="fa-regular fa-heart mr-2"></i> Wishlist';
+            buttonElement.classList.remove('text-red-500', 'border-red-500');
+            buttonElement.classList.add('border-gray-300');
+          } else {
+            // Was not in wishlist, now added
+            showNotification(`${title} has been added to your wishlist`, 'success');
+            buttonElement.innerHTML = '<i class="fas fa-heart mr-2"></i> Wishlist';
+            buttonElement.classList.add('text-red-500', 'border-red-500');
+            buttonElement.classList.remove('border-gray-300');
+          }
+        } else {
+          showNotification(data.message || 'Error updating wishlist', 'error');
+        }
+      })
+      .catch(error => {
+        console.error('Error updating wishlist:', error);
+        showNotification('Error updating wishlist', 'error');
+      });
+      
+      // Prevent the card from redirecting
+      return false;
+    }
+    
+    function isUserLoggedIn() {
+      // If the logout link is visible, user is logged in
+      const logoutLink = document.querySelector('a[href="/auth/logout"]');
+      return logoutLink && window.getComputedStyle(logoutLink).display !== 'none';
+    }
+    
+    function addToCart(artId, buttonElement) {
+      try {
+        // Get the artwork details from the DOM
+        const artworkElement = document.querySelector(`button[data-id="${artId}"]`).closest('.group');
+        const title = artworkElement.querySelector('h3').textContent;
+        const artist = artworkElement.querySelector('p.text-gray-600').textContent.replace('By ', '');
+        const priceText = artworkElement.querySelector('.text-3xl.font-bold').textContent.replace('$', '');
+        const price = parseFloat(priceText.replace(/,/g, ''));
+        const image = artworkElement.querySelector('img').src;
+        
+        // Get existing cart or create new one
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        
+        // Check if item already exists in cart
+        const existingItem = cart.find(item => item.id === artId);
+        
+        if (existingItem) {
+          showNotification('This artwork is already in your cart', 'info');
+        } else {
+          // Add to cart
+          cart.push({
+            id: artId,
+            title: title,
+            artist: artist,
+            price: price,
+            image: image,
+            quantity: 1
+          });
+          
+          localStorage.setItem('cart', JSON.stringify(cart));
+          showNotification(`${title} has been added to your cart`, 'success');
+          
+          // Update cart count in header if it exists
+          updateCartCount();
+          
+          // Add visual feedback to the button
+          if (buttonElement) {
+            const originalContent = buttonElement.innerHTML;
+            buttonElement.innerHTML = '<i class="fas fa-check mr-2"></i> Added to Cart';
+            buttonElement.classList.add('bg-green-600');
+            
+            setTimeout(() => {
+              buttonElement.innerHTML = originalContent;
+              buttonElement.classList.remove('bg-green-600');
+            }, 1500);
+          }
+        }
+        
+        // Prevent the card from redirecting
+        return false;
+      } catch (error) {
+        console.error('Error adding to cart:', error);
+        showNotification('Error adding item to cart', 'error');
+        return false;
+      }
+    }
+    
+    function updateCartCount() {
+      const cartCountElement = document.getElementById('cart-count');
+      if (cartCountElement) {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        cartCountElement.textContent = cart.length;
+      }
+    }
+    
+    // Show notification for user feedback
+    function showNotification(message, type = 'info') {
+      // Create notification element
+      const notification = document.createElement('div');
+      
+      // Set classes based on type
+      let bgColor = 'bg-gray-800';
+      if (type === 'error') bgColor = 'bg-red-600';
+      if (type === 'success') bgColor = 'bg-green-600';
+      if (type === 'info') bgColor = 'bg-blue-600';
+      
+      notification.className = `fixed bottom-4 right-4 ${bgColor} text-white py-2 px-4 rounded-md shadow-lg transform translate-y-full opacity-0 transition-all duration-300 z-50`;
+      notification.textContent = message;
+      document.body.appendChild(notification);
+      
+      // Show notification
+      setTimeout(() => {
+        notification.style.transform = 'translate(0)';
+        notification.style.opacity = '1';
+      }, 100);
+      
+      // Hide notification after 3 seconds
+      setTimeout(() => {
+        notification.style.transform = 'translateY(10px)';
+        notification.style.opacity = '0';
+        
+        // Remove from DOM after animation completes
+        setTimeout(() => {
+          document.body.removeChild(notification);
+        }, 300);
+      }, 3000);
+    }
+    
+    // Check if each artwork is in the user's favorites
+    function checkWishlistStatus() {
+      // Only check if user is logged in
+      if (!isUserLoggedIn()) return;
+      
+      // Get all wishlist buttons
+      const wishlistButtons = document.querySelectorAll('.wishlist-btn');
+      
+      // For each button, check if its artwork is in the user's favorites
+      wishlistButtons.forEach(button => {
+        const artId = button.getAttribute('data-id');
+        
+        fetch(`/wishlist/check/${artId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success && data.isFavorite) {
+            // Update button to show it's in favorites
+            button.innerHTML = '<i class="fas fa-heart mr-2"></i> Wishlist';
+            button.classList.add('text-red-500', 'border-red-500');
+            button.classList.remove('border-gray-300');
+          }
+        })
+        .catch(error => {
+          console.error('Error checking wishlist status:', error);
+        });
+      });
+    }
+    
+    // Make the artwork card clickable
+    document.addEventListener('DOMContentLoaded', function() {
+      const searchInput = document.getElementById('search-input');
+      if (searchInput) {
+        searchInput.addEventListener('keyup', function(event) {
+          if (event.key === 'Enter') {
+            searchArtworks();
+          }
+        });
+      }
+      
+      // Update cart count on page load
+      updateCartCount();
+      
+      // Check wishlist status for all artworks
+      checkWishlistStatus();
+    });
+  </script>
+</body>
+</html>

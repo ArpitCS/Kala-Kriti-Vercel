@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Kala-Kriti | <%= event.name %></title>
+  <%- include('partials/base-head') %>
+</head>
+<body class="bg-gray-50">
+  <!-- Set the active page for the header -->
+  <% locals.page = 'events' %>
+  
+  <!-- Header -->
+  <%- include('partials/header') %>
+  
+  <!-- Event Detail Section -->
+  <section class="py-12">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col lg:flex-row gap-8">
+        <!-- Left: Event Image -->
+        <div class="w-full lg:w-1/2">
+          <div class="bg-white rounded-lg overflow-hidden shadow-sm">
+            <img src="<%= event.imageUrl || 'https://i.pinimg.com/736x/fe/1b/6d/fe1b6dbecf9616490acd6eb465c25e48.jpg' %>" alt="<%= event.name %>" class="w-full h-96 object-cover">
+          </div>
+        </div>
+        
+        <!-- Right: Event Details -->
+        <div class="w-full lg:w-1/2">
+          <div class="bg-white rounded-lg p-6 shadow-sm">
+            <h1 class="text-3xl font-semibold mb-2"><%= event.name %></h1>
+            
+            <div class="border-t border-b border-gray-100 py-4 my-4">
+              <div class="flex items-center text-gray-600 text-lg mb-2">
+                <i class="far fa-calendar-alt mr-2"></i>
+                <span><%= new Date(event.startTime).toLocaleDateString('en-US', {weekday: 'long', month: 'long', day: 'numeric', year: 'numeric'}) %></span>
+              </div>
+              
+              <div class="flex items-center text-gray-600 text-lg mb-2">
+                <i class="far fa-clock mr-2"></i>
+                <span><%= new Date(event.startTime).toLocaleTimeString('en-US', {hour: 'numeric', minute: '2-digit'}) %> - <%= new Date(event.endTime).toLocaleTimeString('en-US', {hour: 'numeric', minute: '2-digit'}) %></span>
+              </div>
+              
+              <div class="flex items-center text-gray-600 text-lg mb-4">
+                <% if (event.type === 'Online') { %>
+                  <i class="fas fa-video mr-2"></i>
+                  <span><%= event.platform || 'Online Platform' %></span>
+                <% } else { %>
+                  <i class="fas fa-map-marker-alt mr-2"></i>
+                  <span><%= event.location %></span>
+                <% } %>
+              </div>
+              
+              <div class="flex mb-6">
+                <button id="add-to-calendar-btn" class="px-6 py-3 bg-black text-white font-medium rounded-md hover:bg-gray-800 transition-colors duration-200 flex items-center">
+                  <i class="far fa-calendar-plus mr-2"></i> Add to Calendar
+                </button>
+              </div>
+            </div>
+            
+            <div class="mb-6">
+              <h3 class="text-lg font-medium mb-2">Description</h3>
+              <p class="text-gray-600"><%= event.description || 'No description available.' %></p>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4 mb-6">
+              <div>
+                <h3 class="text-sm font-medium text-gray-500">Category</h3>
+                <p><%= event.category %></p>
+              </div>
+              <div>
+                <h3 class="text-sm font-medium text-gray-500">Event Type</h3>
+                <p><%= event.type %></p>
+              </div>
+              <% if (event.tags && event.tags.length > 0) { %>
+                <div class="col-span-2">
+                  <h3 class="text-sm font-medium text-gray-500">Tags</h3>
+                  <div class="flex flex-wrap mt-1">
+                    <% event.tags.forEach(tag => { %>
+                      <span class="bg-gray-100 text-gray-800 text-xs font-medium py-1 px-2 rounded-full mr-2 mb-1"><%= tag %></span>
+                    <% }) %>
+                  </div>
+                </div>
+              <% } %>
+            </div>
+            
+            <div class="border-t border-gray-100 pt-4">
+              <h3 class="text-lg font-medium mb-3">Share This Event</h3>
+              <div class="flex space-x-4">
+                <a href="#" class="text-gray-500 hover:text-gray-800">
+                  <i class="fab fa-facebook-f text-xl"></i>
+                </a>
+                <a href="#" class="text-gray-500 hover:text-gray-800">
+                  <i class="fab fa-twitter text-xl"></i>
+                </a>
+                <a href="#" class="text-gray-500 hover:text-gray-800">
+                  <i class="fab fa-linkedin-in text-xl"></i>
+                </a>
+                <a href="#" class="text-gray-500 hover:text-gray-800">
+                  <i class="fab fa-instagram text-xl"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Similar Events Section -->
+  <section class="py-12 bg-white">
+    <div class="container mx-auto px-4">
+      <h2 class="text-2xl font-semibold mb-8 text-center">Similar Events You Might Like</h2>
+      
+      <div class="flex overflow-x-auto pb-6 -mx-4 px-4 space-x-6 scrollbar-hide">
+        <% if (locals.similarEvents && similarEvents.length > 0) { %>
+          <% similarEvents.forEach(similarEvent => { %>
+            <!-- Event Card -->
+            <div class="flex-shrink-0 w-72 bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div class="relative h-48">
+                <img
+                  src="<%= similarEvent.imageUrl || (similarEvent.type === 'Online' ? 'https://thumbs2.follow.art/thumbs/event_list_xxxl/pieces-thubnail-666-x-400-px-673b9b0fca083920734255.jpg' : 'https://i.pinimg.com/736x/fe/1b/6d/fe1b6dbecf9616490acd6eb465c25e48.jpg') %>"
+                  alt="<%= similarEvent.name %>"
+                  class="w-full h-full object-cover"
+                />
+                <div class="absolute bottom-0 left-0 bg-black bg-opacity-70 text-white py-1 px-3">
+                  <p class="text-sm font-medium"><%= new Date(similarEvent.startTime).toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'}) %></p>
+                </div>
+                <% if (similarEvent.type === 'Online') { %>
+                  <div class="absolute top-3 right-3 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                    ONLINE
+                  </div>
+                <% } %>
+              </div>
+              <div class="p-5">
+                <h3 class="text-lg font-semibold mb-2"><%= similarEvent.name %></h3>
+                <div class="flex items-center text-gray-600 text-sm mb-2">
+                  <i class="far fa-clock mr-2"></i>
+                  <span><%= new Date(similarEvent.startTime).toLocaleTimeString('en-US', {hour: 'numeric', minute: '2-digit'}) %> - <%= new Date(similarEvent.endTime).toLocaleTimeString('en-US', {hour: 'numeric', minute: '2-digit'}) %></span>
+                </div>
+                <div class="flex items-center text-gray-600 text-sm mb-3">
+                  <% if (similarEvent.type === 'Online') { %>
+                    <i class="fas fa-video mr-2"></i>
+                    <span><%= similarEvent.platform || 'Online' %></span>
+                  <% } else { %>
+                    <i class="fas fa-map-marker-alt mr-2"></i>
+                    <span><%= similarEvent.location %></span>
+                  <% } %>
+                </div>
+                <div class="flex items-center text-gray-600 text-sm mb-4">
+                  <span class="bg-gray-100 rounded-full px-3 py-1"><%= similarEvent.category %></span>
+                </div>
+                <a href="/events/<%= similarEvent._id %>" class="block text-center px-4 py-2 border border-black text-black font-medium rounded-md hover:bg-black hover:text-white transition-colors duration-200">
+                  View Details
+                </a>
+              </div>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <div class="text-center w-full py-8">
+            <p class="text-gray-500">No similar events found.</p>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Google Map Section (for offline events) -->
+  <% if (event.type === 'Offline' && event.location) { %>
+  <section class="py-12 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <h2 class="text-2xl font-semibold mb-6 text-center">Event Location</h2>
+      <div class="bg-white rounded-lg overflow-hidden shadow-sm h-96">
+        <!-- Replace with your Google Maps implementation -->
+        <div id="event-map" class="w-full h-full"></div>
+      </div>
+    </div>
+  </section>
+  <% } %>
+  
+  <!-- Footer -->
+  <%- include('partials/footer') %>
+  
+  <!-- Common Scripts -->
+  <%- include('partials/base-scripts') %>
+  
+  <!-- Event Detail Page Specific Scripts -->
+  <script>
+    document.getElementById('add-to-calendar-btn').addEventListener('click', function() {
+      // Implementation for adding to calendar functionality
+      alert('Calendar functionality will be implemented here.');
+    });
+    
+    <% if (event.type === 'Offline' && event.location) { %>
+    // Google Maps implementation would go here
+    function initMap() {
+      // This is a placeholder for where you would initialize your Google Map
+      // You'll need to replace this with actual Google Maps API code
+      const mapElement = document.getElementById('event-map');
+      if (mapElement) {
+        mapElement.innerHTML = `<div class="flex items-center justify-center h-full bg-gray-100">
+          <p class="text-gray-500">Google Maps will be displayed here using the location: "${<%= JSON.stringify(event.location) %>}"</p>
+        </div>`;
+      }
+    }
+    
+    // Call initMap when the page loads
+    window.addEventListener('load', initMap);
+    <% } %>
+  </script>
+</body>
+</html> 

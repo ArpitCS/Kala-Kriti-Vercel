@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Kala-Kriti | Online Events</title>
+  <%- include('partials/base-head') %>
+</head>
+<body class="bg-gray-50">
+  <!-- Set the active page for the header -->
+  <% locals.page = 'events' %>
+  
+  <!-- Header -->
+  <%- include('partials/header') %>
+  
+  <!-- Online Events Header Section -->
+  <section class="bg-white py-12">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto text-center">
+        <h1 class="text-4xl md:text-5xl font-semibold mb-4">Online Art Events</h1>
+        <p class="text-gray-600 text-lg">
+          Participate in art events from anywhere in the world. Join virtual exhibitions,
+          workshops, and interactive sessions from the comfort of your home.
+        </p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Filters Section -->
+  <section class="py-8 bg-white border-b">
+    <div class="container mx-auto px-4">
+      <form id="filter-form" class="flex flex-wrap gap-4 justify-center items-end">
+        <!-- Category Filter -->
+        <div class="w-full md:w-auto">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+          <select name="category" class="rounded-md border-gray-300 shadow-sm focus:border-black focus:ring focus:ring-black focus:ring-opacity-50 px-4 py-2 w-full">
+            <option value="">All Categories</option>
+            <option value="Exhibition">Exhibition</option>
+            <option value="Workshop">Workshop</option>
+            <option value="Webinar">Webinar</option>
+            <option value="Virtual Tour">Virtual Tour</option>
+            <option value="Live Demo">Live Demo</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        
+        <!-- Date Range Filter -->
+        <div class="w-full md:w-auto">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Date Range</label>
+          <select name="date_range" class="rounded-md border-gray-300 shadow-sm focus:border-black focus:ring focus:ring-black focus:ring-opacity-50 px-4 py-2 w-full">
+            <option value="all">All Dates</option>
+            <option value="today">Today</option>
+            <option value="tomorrow">Tomorrow</option>
+            <option value="this_week">This Week</option>
+            <option value="this_month">This Month</option>
+            <option value="next_month">Next Month</option>
+          </select>
+        </div>
+        
+        <!-- Platform Filter -->
+        <div class="w-full md:w-auto">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Platform</label>
+          <select name="platform" class="rounded-md border-gray-300 shadow-sm focus:border-black focus:ring focus:ring-black focus:ring-opacity-50 px-4 py-2 w-full">
+            <option value="">All Platforms</option>
+            <option value="Zoom">Zoom</option>
+            <option value="Google Meet">Google Meet</option>
+            <option value="Microsoft Teams">Microsoft Teams</option>
+            <option value="YouTube Live">YouTube Live</option>
+            <option value="Instagram Live">Instagram Live</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        
+        <!-- Apply Filters Button -->
+        <div class="w-full md:w-auto">
+          <button type="submit" class="w-full md:w-auto px-6 py-2 bg-black text-white font-medium rounded-md hover:bg-gray-800 transition-colors duration-200">
+            Apply Filters
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+  
+  <!-- Events Listing Section -->
+  <section class="py-12">
+    <div class="container mx-auto px-4">
+      <!-- Sorting controls -->
+      <div class="flex flex-wrap justify-between items-center mb-8">
+        <div class="mb-4 md:mb-0">
+          <p class="text-gray-600"><span id="event-count"><%= onlineEvents.length %></span> events found</p>
+        </div>
+        <div class="flex items-center">
+          <label class="mr-2 text-gray-600">Sort by:</label>
+          <select id="sort-select" class="rounded-md border-gray-300 shadow-sm focus:border-black focus:ring focus:ring-black focus:ring-opacity-50 px-4 py-2">
+            <option value="date-asc">Date (Ascending)</option>
+            <option value="date-desc">Date (Descending)</option>
+            <option value="name-asc">Name (A-Z)</option>
+            <option value="name-desc">Name (Z-A)</option>
+          </select>
+        </div>
+      </div>
+      
+      <!-- Events Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <% if (onlineEvents && onlineEvents.length > 0) { %>
+          <% onlineEvents.forEach(event => { %>
+            <!-- Event Card -->
+            <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div class="relative h-48">
+                <a href="/events/<%= event._id %>">
+                  <img
+                    src="<%= event.imageUrl || 'https://thumbs2.follow.art/thumbs/event_list_xxxl/pieces-thubnail-666-x-400-px-673b9b0fca083920734255.jpg' %>"
+                    alt="<%= event.name %>"
+                    class="w-full h-full object-cover"
+                  />
+                </a>
+                <div class="absolute bottom-0 left-0 bg-black bg-opacity-70 text-white py-1 px-3">
+                  <p class="text-sm font-medium"><%= new Date(event.startTime).toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'}) %></p>
+                </div>
+                <div class="absolute top-3 right-3 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                  ONLINE
+                </div>
+              </div>
+              <div class="p-5">
+                <a href="/events/<%= event._id %>" class="hover:text-gray-600">
+                  <h3 class="text-lg font-semibold mb-2"><%= event.name %></h3>
+                </a>
+                <div class="flex items-center text-gray-600 text-sm mb-2">
+                  <i class="far fa-clock mr-2"></i>
+                  <span><%= new Date(event.startTime).toLocaleTimeString('en-US', {hour: 'numeric', minute: '2-digit'}) %> - <%= new Date(event.endTime).toLocaleTimeString('en-US', {hour: 'numeric', minute: '2-digit'}) %></span>
+                </div>
+                <div class="flex items-center text-gray-600 text-sm mb-3">
+                  <i class="fas fa-video mr-2"></i>
+                  <span><%= event.platform || 'Online' %></span>
+                </div>
+                <div class="flex items-center text-gray-600 text-sm mb-4">
+                  <span class="bg-gray-100 rounded-full px-3 py-1"><%= event.category %></span>
+                </div>
+                <a href="/events/<%= event._id %>" class="block text-center px-4 py-2 border border-black text-black font-medium rounded-md hover:bg-black hover:text-white transition-colors duration-200">
+                  View Details
+                </a>
+              </div>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <div class="col-span-full text-center py-12">
+            <p class="text-gray-500 text-lg">No online events found matching your criteria.</p>
+            <a href="/events/online" class="inline-block mt-4 px-6 py-2 border border-black text-black font-medium rounded-md hover:bg-black hover:text-white transition-colors duration-200">
+              Clear Filters
+            </a>
+          </div>
+        <% } %>
+      </div>
+      
+      <!-- Pagination Section -->
+      <% if (totalPages > 1) { %>
+        <div class="mt-12 flex justify-center">
+          <nav class="flex items-center space-x-2">
+            <% if (currentPage > 1) { %>
+              <a href="/events/online?page=<%= currentPage - 1 %>" class="px-3 py-2 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-50">
+                <i class="fas fa-chevron-left"></i>
+              </a>
+            <% } else { %>
+              <span class="px-3 py-2 rounded-md border border-gray-200 text-gray-400 cursor-not-allowed">
+                <i class="fas fa-chevron-left"></i>
+              </span>
+            <% } %>
+            
+            <% for (let i = 1; i <= totalPages; i++) { %>
+              <% if (i === currentPage) { %>
+                <span class="px-3 py-2 rounded-md bg-black text-white">
+                  <%= i %>
+                </span>
+              <% } else { %>
+                <a href="/events/online?page=<%= i %>" class="px-3 py-2 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-50">
+                  <%= i %>
+                </a>
+              <% } %>
+            <% } %>
+            
+            <% if (currentPage < totalPages) { %>
+              <a href="/events/online?page=<%= currentPage + 1 %>" class="px-3 py-2 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-50">
+                <i class="fas fa-chevron-right"></i>
+              </a>
+            <% } else { %>
+              <span class="px-3 py-2 rounded-md border border-gray-200 text-gray-400 cursor-not-allowed">
+                <i class="fas fa-chevron-right"></i>
+              </span>
+            <% } %>
+          </nav>
+        </div>
+      <% } %>
+    </div>
+  </section>
+  
+  <!-- Call to Action Section -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto bg-gray-50 p-8 md:p-12 rounded-lg shadow-sm text-center">
+        <h2 class="text-3xl font-semibold mb-4">Host Your Own Online Event</h2>
+        <p class="text-gray-600 mb-8 max-w-2xl mx-auto">Want to share your artistic skills or host a virtual gallery tour? Partner with Kala-Kriti to reach art enthusiasts worldwide.</p>
+        <a href="/contact" class="px-6 py-3 bg-black text-white font-medium rounded-md hover:bg-gray-800 transition-colors duration-200">
+          Get Started
+        </a>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  <%- include('partials/footer') %>
+  
+  <!-- Common Scripts -->
+  <%- include('partials/base-scripts') %>
+  
+  <!-- Events Page Specific Scripts -->
+  <script>
+    // Form submission handling for filters
+    document.getElementById('filter-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Get form data
+      const formData = new FormData(this);
+      
+      // Convert to query parameters
+      const params = new URLSearchParams();
+      for (const [key, value] of formData.entries()) {
+        if (value) params.append(key, value);
+      }
+      
+      // Redirect with filters
+      window.location.href = '/events/online?' + params.toString();
+    });
+    
+    // Sorting functionality
+    document.getElementById('sort-select').addEventListener('change', function() {
+      const currentUrl = new URL(window.location.href);
+      currentUrl.searchParams.set('sort', this.value);
+      window.location.href = currentUrl.toString();
+    });
+    
+    // Set initial sort value from URL if present
+    (function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const sortValue = urlParams.get('sort');
+      if (sortValue) {
+        document.getElementById('sort-select').value = sortValue;
+      }
+      
+      // Set initial form values from URL parameters
+      const filterForm = document.getElementById('filter-form');
+      for (const [key, value] of urlParams.entries()) {
+        const element = filterForm.elements[key];
+        if (element) {
+          element.value = value;
+        }
+      }
+    })();
+  </script>
+  
+  <style>
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+    .scrollbar-hide {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</body>
+</html> 

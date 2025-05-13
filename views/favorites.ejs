@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Wishlist | Kala-Kriti Art Gallery</title>
+  <%- include('partials/base-head') %>
+</head>
+<body class="bg-gray-50">
+  <!-- Set the active page for header -->
+  <% locals.page = 'wishlist' %>
+  
+  <!-- Header -->
+  <%- include('partials/header') %>
+  
+  <!-- Wishlist Page Header Section -->
+  <section class="bg-white py-12">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto text-center">
+        <h1 class="text-4xl md:text-5xl font-semibold mb-4">My Wishlist</h1>
+        <p class="text-gray-600 text-lg">
+          Your favorite artworks saved in one place. Browse your wishlist or add items to your cart.
+        </p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Wishlist/Favorites Gallery -->
+  <section class="py-12">
+    <div class="container mx-auto px-4">
+      <% if (locals.error) { %>
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6" role="alert">
+          <p><%= error %></p>
+        </div>
+      <% } %>
+      
+      <% if (locals.favorites && favorites.length > 0) { %>
+        <div id="favorites-gallery" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 px-4">
+          <% favorites.forEach(art => { %>
+            <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 group">
+              <div class="relative">
+                <a href="/artworks/<%= art._id %>" class="block">
+                  <img src="<%= art.imageUrl %>" alt="<%= art.title %>" class="w-full h-64 object-cover">
+                </a>
+              </div>
+              <div class="p-3">
+                <h3 class="text-xl font-medium text-gray-900 mb-1 truncate"><%= art.title %></h3>
+                <p class="text-gray-600 mb-4">By <%= art.artist %></p>
+                <div class="flex justify-between items-center mb-5">
+                  <p class="text-2xl font-bold text-gray-900">$<%= art.price.toLocaleString() %></p>
+                  <span class="text-sm py-1 px-3 bg-gray-100 text-gray-700 rounded-full"><%= art.category %></span>
+                </div>
+                <div class="flex flex-col space-y-2">
+                  <button class="flex-1 wishlist-btn bg-white border border-red-500 text-red-500 py-2 px-1 rounded-full hover:bg-red-50 transition-all" data-id="<%= art._id %>" onclick="removeFromWishlist('<%= art._id %>', this);">
+                    <i class="fas fa-heart mr-2"></i> Remove from Wishlist
+                  </button>
+                  <button class="flex-1 cart-btn bg-black text-white py-2 px-4 rounded-full hover:bg-gray-800 transition-all" data-id="<%= art._id %>" onclick="addToCart('<%= art._id %>', this);">
+                    <i class="fa-solid fa-cart-plus mr-2"></i> Add to Cart
+                  </button>
+                </div>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+      <% } else { %>
+        <div class="bg-white rounded-lg shadow-sm p-10 text-center">
+          <div class="flex flex-col items-center max-w-xl mx-auto">
+            <div class="w-20 h-20 mb-6 flex items-center justify-center rounded-full bg-gray-100">
+              <i class="far fa-heart text-4xl text-gray-400"></i>
+            </div>
+            <h2 class="text-2xl font-semibold text-gray-800 mb-2">Your wishlist is empty</h2>
+            <p class="text-gray-600 mb-8">Start adding artworks to your wishlist by clicking the heart icon on artworks you love. Your saved items will appear here.</p>
+            <div class="flex flex-col sm:flex-row gap-4 w-full max-w-sm mx-auto">
+              <a href="/artworks" class="w-full px-6 py-3 bg-black text-white font-medium rounded-md hover:bg-gray-800 transition-colors text-center">
+                Browse Artworks
+              </a>
+            </div>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  </section>
+  
+  <!-- Call to Action Section -->
+  <section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto bg-white p-8 md:p-12 rounded-lg shadow-sm text-center">
+        <h2 class="text-3xl font-semibold mb-4">Ready to Purchase?</h2>
+        <p class="text-gray-600 mb-8 max-w-2xl mx-auto">Add your favorite artworks to your cart and complete your purchase in a few easy steps.</p>
+        <a href="/cart" class="px-6 py-3 bg-black text-white font-medium rounded-md hover:bg-gray-800 transition-colors duration-200 mr-4">
+          View Cart
+        </a>
+        <a href="/artworks" class="px-6 py-3 bg-gray-200 text-gray-800 font-medium rounded-md hover:bg-gray-300 transition-colors duration-200">
+          Browse More Art
+        </a>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  <%- include('partials/footer') %>
+  
+  <!-- Common Scripts -->
+  <%- include('partials/base-scripts') %>
+  
+  <script>
+    function removeFromWishlist(artId, buttonElement) {
+      // Only proceed if user is logged in
+      if (!isUserLoggedIn()) {
+        showNotification('Please log in to manage your wishlist', 'info');
+        return false;
+      }
+      
+      // Get the artwork details for notification purposes
+      const artworkElement = buttonElement.closest('.group');
+      const title = artworkElement.querySelector('h3').textContent;
+      
+      // Send request to remove from favorites
+      fetch(`/wishlist/remove/${artId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          showNotification(`${title} has been removed from your wishlist`, 'info');
+          
+          // Remove the artwork card from the DOM with animation
+          artworkElement.classList.add('opacity-0');
+          setTimeout(() => {
+            artworkElement.remove();
+            
+            // Check if wishlist is now empty and show empty state if needed
+            const remainingItems = document.querySelectorAll('#favorites-gallery .group');
+            if (remainingItems.length === 0) {
+              const emptyState = `
+                <div class="bg-white rounded-lg shadow-sm p-10 text-center">
+                  <div class="flex flex-col items-center max-w-xl mx-auto">
+                    <div class="w-20 h-20 mb-6 flex items-center justify-center rounded-full bg-gray-100">
+                      <i class="far fa-heart text-4xl text-gray-400"></i>
+                    </div>
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-2">Your wishlist is empty</h2>
+                    <p class="text-gray-600 mb-8">Start adding artworks to your wishlist by clicking the heart icon on artworks you love. Your saved items will appear here.</p>
+                    <div class="flex flex-col sm:flex-row gap-4 w-full max-w-sm mx-auto">
+                      <a href="/artworks" class="w-full px-6 py-3 bg-black text-white font-medium rounded-md hover:bg-gray-800 transition-colors text-center">
+                        Browse Artworks
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              `;
+              document.getElementById('favorites-gallery').outerHTML = emptyState;
+            }
+          }, 300);
+        } else {
+          showNotification('Error removing from wishlist', 'error');
+        }
+      })
+      .catch(error => {
+        console.error('Error removing from wishlist:', error);
+        showNotification('Error removing from wishlist', 'error');
+      });
+      
+      return false;
+    }
+    
+    function addToCart(artId, buttonElement) {
+      try {
+        // Get the artwork details from the DOM
+        const artworkElement = buttonElement.closest('.group');
+        const title = artworkElement.querySelector('h3').textContent;
+        const artist = artworkElement.querySelector('p').textContent.replace('By ', '');
+        const priceText = artworkElement.querySelector('.font-bold').textContent.replace('$', '');
+        const price = parseFloat(priceText.replace(/,/g, ''));
+        const image = artworkElement.querySelector('img').src;
+        
+        // Get existing cart or create new one
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        
+        // Check if item already exists in cart
+        const existingItem = cart.find(item => item.id === artId);
+        
+        if (existingItem) {
+          showNotification('This artwork is already in your cart', 'info');
+        } else {
+          // Add to cart
+          cart.push({
+            id: artId,
+            title: title,
+            artist: artist,
+            price: price,
+            image: image,
+            quantity: 1
+          });
+          
+          localStorage.setItem('cart', JSON.stringify(cart));
+          showNotification(`${title} has been added to your cart`, 'success');
+          
+          // Add visual feedback to the button
+          if (buttonElement) {
+            const originalContent = buttonElement.innerHTML;
+            buttonElement.innerHTML = '<i class="fas fa-check mr-2"></i> Added to Cart';
+            buttonElement.classList.add('bg-green-600');
+            
+            setTimeout(() => {
+              buttonElement.innerHTML = originalContent;
+              buttonElement.classList.remove('bg-green-600');
+            }, 1500);
+          }
+        }
+        
+        // Prevent the card from redirecting
+        return false;
+      } catch (error) {
+        console.error('Error adding to cart:', error);
+        showNotification('Error adding item to cart', 'error');
+        return false;
+      }
+    }
+    
+    function isUserLoggedIn() {
+      // If the logout link is visible, user is logged in
+      const logoutLink = document.querySelector('a[href="/auth/logout"]');
+      return logoutLink && window.getComputedStyle(logoutLink).display !== 'none';
+    }
+    
+    // Show notification for user feedback
+    function showNotification(message, type = 'info') {
+      // Create notification element
+      const notification = document.createElement('div');
+      
+      // Set classes based on type
+      let bgColor = 'bg-gray-800';
+      if (type === 'error') bgColor = 'bg-red-600';
+      if (type === 'success') bgColor = 'bg-green-600';
+      if (type === 'info') bgColor = 'bg-blue-600';
+      
+      notification.className = `fixed bottom-4 right-4 ${bgColor} text-white py-2 px-4 rounded-md shadow-lg transform translate-y-full opacity-0 transition-all duration-300 z-50`;
+      notification.textContent = message;
+      document.body.appendChild(notification);
+      
+      // Show notification
+      setTimeout(() => {
+        notification.style.transform = 'translate(0)';
+        notification.style.opacity = '1';
+      }, 100);
+      
+      // Hide notification after 3 seconds
+      setTimeout(() => {
+        notification.style.transform = 'translateY(10px)';
+        notification.style.opacity = '0';
+        
+        // Remove from DOM after animation completes
+        setTimeout(() => {
+          document.body.removeChild(notification);
+        }, 300);
+      }, 3000);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      // Nothing needed here now
+    });
+  </script>
+  
+  <style>
+    .group {
+      transition: opacity 0.3s ease;
+    }
+  </style>
+</body>
+</html> 

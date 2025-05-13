@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Kala-Kriti | Portfolio</title>
+  <%- include('partials/base-head') %>
+</head>
+<body class="bg-gray-50">
+  <!-- Set the active page for the header -->
+  <% locals.page = 'portfolio' %>
+  
+  <!-- Header -->
+  <%- include('partials/header') %>
+  
+  <!-- Portfolio Header Section -->
+  <section class="bg-white py-12">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto text-center">
+        <h1 class="text-4xl md:text-5xl font-semibold mb-4">About Kala-Kriti</h1>
+        <p class="text-gray-600 text-lg">
+          Experience a world of diverse art and artistic events through our innovative platform.
+        </p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- About Section -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col lg:flex-row items-center gap-12 max-w-6xl mx-auto">
+        <div class="w-full lg:w-1/2">
+          <div class="space-y-6">
+            <p class="text-gray-600 leading-relaxed">
+              At Kala-Kriti, we strive to connect art enthusiasts with artists from around the globe. Whether you are looking to buy a new centerpiece for your collection or sell your artwork to a broader audience, our platform provides seamless solutions.
+            </p>
+            <p class="text-gray-600 leading-relaxed">
+              We feature exhibitions, live events, and digital galleries, ensuring that you not only discover incredible art but also stay informed about upcoming artistic happenings. Our mission is to cultivate a thriving community where creativity can flourish and art can truly shine.
+            </p>
+            <p class="text-gray-600 leading-relaxed">
+              Join us in exploring a diverse range of artworks across various mediums. From classic paintings to modern sculptures and digital pieces, Kala-Kriti is dedicated to celebrating the spirit of art in all its forms.
+            </p>
+          </div>
+        </div>
+        <div class="w-full lg:w-1/2">
+          <img 
+            src="/images/about.png" 
+            alt="Art Showcase" 
+            class="w-full h-auto rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- What We Offer Section -->
+  <section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-semibold mb-3">What We Offer</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto">Services tailored for artists, collectors, and enthusiasts</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+        <!-- Service 1 -->
+        <div class="bg-white rounded-lg p-8 text-center shadow-sm hover:shadow-md transition-shadow duration-300">
+          <div class="text-4xl mb-4 text-gray-800 flex justify-center">
+            <i class="fas fa-palette"></i>
+          </div>
+          <h3 class="text-xl font-medium mb-3">Explore Artwork</h3>
+          <p class="text-gray-600">Discover a wide range of art pieces, curated and organized for easy browsing.</p>
+        </div>
+        
+        <!-- Service 2 -->
+        <div class="bg-white rounded-lg p-8 text-center shadow-sm hover:shadow-md transition-shadow duration-300">
+          <div class="text-4xl mb-4 text-gray-800 flex justify-center">
+            <i class="fas fa-shopping-cart"></i>
+          </div>
+          <h3 class="text-xl font-medium mb-3">Buy Art</h3>
+          <p class="text-gray-600">Purchase your favorite paintings, sculptures, or photographs from our collection.</p>
+        </div>
+        
+        <!-- Service 3 -->
+        <div class="bg-white rounded-lg p-8 text-center shadow-sm hover:shadow-md transition-shadow duration-300">
+          <div class="text-4xl mb-4 text-gray-800 flex justify-center">
+            <i class="fas fa-cash-register"></i>
+          </div>
+          <h3 class="text-xl font-medium mb-3">Sell Art</h3>
+          <p class="text-gray-600">Showcase your creations and reach potential buyers around the world.</p>
+        </div>
+        
+        <!-- Service 4 -->
+        <div class="bg-white rounded-lg p-8 text-center shadow-sm hover:shadow-md transition-shadow duration-300">
+          <div class="text-4xl mb-4 text-gray-800 flex justify-center">
+            <i class="fas fa-calendar-day"></i>
+          </div>
+          <h3 class="text-xl font-medium mb-3">Attend Events</h3>
+          <p class="text-gray-600">Stay updated on art exhibitions, workshops, and networking events.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Team Section -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-semibold mb-3">Our Core Members</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto">Meet the visionaries behind Kala-Kriti</p>
+      </div>
+      
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+        <!-- Team Member 1 -->
+        <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 text-center">
+          <div class="relative">
+            <div class="aspect-square overflow-hidden">
+              <img 
+                src="/images/sajal.png" 
+                alt="Sajal Garg" 
+                class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-300"
+              />
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 hover:opacity-70 transition-opacity duration-300 flex items-end">
+              <div class="p-4 text-white w-full">
+                <div class="flex justify-center space-x-3 my-2">
+                  <a href="#" class="hover:text-gray-300 transition-colors"><i class="fab fa-linkedin"></i></a>
+                  <a href="#" class="hover:text-gray-300 transition-colors"><i class="fab fa-github"></i></a>
+                  <a href="#" class="hover:text-gray-300 transition-colors"><i class="fab fa-twitter"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="p-4">
+            <h3 class="text-xl font-medium text-gray-900">Sajal Garg</h3>
+          </div>
+        </div>
+        
+        <!-- Team Member 2 -->
+        <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 text-center">
+          <div class="relative">
+            <div class="aspect-square overflow-hidden">
+              <img 
+                src="/images/arpit.png" 
+                alt="Arpit Garg" 
+                class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-300"
+              />
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 hover:opacity-70 transition-opacity duration-300 flex items-end">
+              <div class="p-4 text-white w-full">
+                <div class="flex justify-center space-x-3 my-2">
+                  <a href="#" class="hover:text-gray-300 transition-colors"><i class="fab fa-linkedin"></i></a>
+                  <a href="#" class="hover:text-gray-300 transition-colors"><i class="fab fa-github"></i></a>
+                  <a href="#" class="hover:text-gray-300 transition-colors"><i class="fab fa-twitter"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="p-4">
+            <h3 class="text-xl font-medium text-gray-900">Arpit Garg</h3>
+          </div>
+        </div>
+        
+        <!-- Team Member 3 -->
+        <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 text-center">
+          <div class="relative">
+            <div class="aspect-square overflow-hidden">
+              <img 
+                src="/images/raman.jpeg" 
+                alt="Ramanjot Singh" 
+                class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-300"
+              />
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 hover:opacity-70 transition-opacity duration-300 flex items-end">
+              <div class="p-4 text-white w-full">
+                <div class="flex justify-center space-x-3 my-2">
+                  <a href="#" class="hover:text-gray-300 transition-colors"><i class="fab fa-linkedin"></i></a>
+                  <a href="#" class="hover:text-gray-300 transition-colors"><i class="fab fa-github"></i></a>
+                  <a href="#" class="hover:text-gray-300 transition-colors"><i class="fab fa-twitter"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="p-4">
+            <h3 class="text-xl font-medium text-gray-900">Ramanjot Singh</h3>
+          </div>
+        </div>
+        
+        <!-- Team Member 4 -->
+        <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 text-center">
+          <div class="relative">
+            <div class="aspect-square overflow-hidden">
+              <img 
+                src="/images/gupil.jpeg" 
+                alt="Gupil Thappa" 
+                class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-300"
+              />
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 hover:opacity-70 transition-opacity duration-300 flex items-end">
+              <div class="p-4 text-white w-full">
+                <div class="flex justify-center space-x-3 my-2">
+                  <a href="#" class="hover:text-gray-300 transition-colors"><i class="fab fa-linkedin"></i></a>
+                  <a href="#" class="hover:text-gray-300 transition-colors"><i class="fab fa-github"></i></a>
+                  <a href="#" class="hover:text-gray-300 transition-colors"><i class="fab fa-twitter"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="p-4">
+            <h3 class="text-xl font-medium text-gray-900">Gupil Thappa</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Future Plans Section -->
+  <section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-semibold mb-3">Our Future Plans</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto">Innovations and expansions in the world of art</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <!-- Future Plan 1 -->
+        <div class="bg-white rounded-lg p-8 shadow-sm hover:shadow-md transition-shadow duration-300 text-center">
+          <div class="text-4xl mb-4 text-gray-800 flex justify-center">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h3 class="text-xl font-medium mb-3">Interactive Art Analytics</h3>
+          <p class="text-gray-600">Deep insights into trending styles and artists to help collectors and creators alike.</p>
+        </div>
+        
+        <!-- Future Plan 2 -->
+        <div class="bg-white rounded-lg p-8 shadow-sm hover:shadow-md transition-shadow duration-300 text-center">
+          <div class="text-4xl mb-4 text-gray-800 flex justify-center">
+            <i class="fas fa-cloud-upload-alt"></i>
+          </div>
+          <h3 class="text-xl font-medium mb-3">Cloud Portfolio</h3>
+          <p class="text-gray-600">Store and showcase your artwork securely online for seamless global access.</p>
+        </div>
+        
+        <!-- Future Plan 3 -->
+        <div class="bg-white rounded-lg p-8 shadow-sm hover:shadow-md transition-shadow duration-300 text-center">
+          <div class="text-4xl mb-4 text-gray-800 flex justify-center">
+            <i class="fas fa-mobile-alt"></i>
+          </div>
+          <h3 class="text-xl font-medium mb-3">Mobile App</h3>
+          <p class="text-gray-600">Connect with fellow art lovers and manage your collection on the go.</p>
+        </div>
+        
+        <!-- Future Plan 4 -->
+        <div class="bg-white rounded-lg p-8 shadow-sm hover:shadow-md transition-shadow duration-300 text-center">
+          <div class="text-4xl mb-4 text-gray-800 flex justify-center">
+            <i class="fas fa-users"></i>
+          </div>
+          <h3 class="text-xl font-medium mb-3">Community Forums</h3>
+          <p class="text-gray-600">Engage with art enthusiasts, participate in discussions, and share creative ideas.</p>
+        </div>
+        
+        <!-- Future Plan 5 -->
+        <div class="bg-white rounded-lg p-8 shadow-sm hover:shadow-md transition-shadow duration-300 text-center">
+          <div class="text-4xl mb-4 text-gray-800 flex justify-center">
+            <i class="fas fa-globe"></i>
+          </div>
+          <h3 class="text-xl font-medium mb-3">Global Events</h3>
+          <p class="text-gray-600">Plan or join international exhibitions, art fairs, and live showcases across continents.</p>
+        </div>
+        
+        <!-- Future Plan 6 -->
+        <div class="bg-white rounded-lg p-8 shadow-sm hover:shadow-md transition-shadow duration-300 text-center">
+          <div class="text-4xl mb-4 text-gray-800 flex justify-center">
+            <i class="fas fa-vr-cardboard"></i>
+          </div>
+          <h3 class="text-xl font-medium mb-3">Virtual Reality Galleries</h3>
+          <p class="text-gray-600">Experience immersive art displays from the comfort of your home using VR technology.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Join Us CTA Section -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto bg-gray-50 p-8 md:p-12 rounded-lg shadow-sm text-center">
+        <h2 class="text-3xl font-semibold mb-4">Join Our Art Community</h2>
+        <p class="text-gray-600 mb-8 max-w-2xl mx-auto">Be part of a global network of artists, collectors, and enthusiasts. Together, we can create a vibrant space for art to thrive in the digital age.</p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/register" class="px-6 py-3 bg-black text-white font-medium rounded-md hover:bg-gray-800 transition-colors duration-200">Create Account</a>
+          <a href="/contact" class="px-6 py-3 bg-white text-black font-medium border border-black rounded-md hover:bg-gray-100 transition-colors duration-200">Contact Us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  <%- include('partials/footer') %>
+  
+  <!-- Common Scripts -->
+  <%- include('partials/base-scripts') %>
+</body>
+</html>

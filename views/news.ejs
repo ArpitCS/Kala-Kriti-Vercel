@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Kala-Kriti | News</title>
+    <%- include('partials/base-head') %>
+  </head>
+  <body class="bg-gray-50">
+    <!-- Set the active page for the header -->
+    <% locals.page = 'news' %>
+
+    <!-- Header -->
+    <%- include('partials/header') %>
+
+    <!-- News Header Section -->
+    <section class="bg-white py-12">
+      <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto text-center">
+          <h1 class="text-4xl md:text-5xl font-semibold mb-4">Art News</h1>
+          <p class="text-gray-600 text-lg">
+            Stay informed about the latest happenings in the art world with our
+            curated news articles.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- News Search Section -->
+    <section class="bg-white border-t border-b border-gray-100 py-6">
+      <div class="container mx-auto px-4">
+        <div class="max-w-3xl mx-auto">
+          <div
+            class="flex items-center bg-gray-50 rounded-full px-6 py-2 shadow-sm"
+          >
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Search news articles..."
+              class="w-full bg-transparent border-0 focus:outline-none px-2 py-2 text-gray-700"
+            />
+            <button
+              id="searchButton"
+              class="bg-black text-white rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0 ml-2"
+            >
+              <i class="fas fa-search"></i>
+            </button>
+            <button
+              id="clearButton"
+              class="bg-red-500 text-white rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0 ml-2"
+            >
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- News Filter Section -->
+    <section class="bg-white py-6">
+      <div class="container mx-auto px-4">
+        <div class="flex flex-wrap justify-center gap-4">
+          <button
+            class="news-filter active px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md text-sm transition-colors duration-200"
+            data-filter="art OR design OR painting OR sculpture OR auction"
+          >
+            All
+          </button>
+          <button
+            class="news-filter px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md text-sm transition-colors duration-200"
+            data-filter="painting OR canvas OR oil painting"
+          >
+            Paintings
+          </button>
+          <button
+            class="news-filter px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md text-sm transition-colors duration-200"
+            data-filter="sculpture OR 3D art"
+          >
+            Sculpture
+          </button>
+          <button
+            class="news-filter px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md text-sm transition-colors duration-200"
+            data-filter="photography OR camera art"
+          >
+            Photography
+          </button>
+          <button
+            class="news-filter px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md text-sm transition-colors duration-200"
+            data-filter="digital art OR NFT OR crypto art"
+          >
+            Digital Art
+          </button>
+          <button
+            class="news-filter px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md text-sm transition-colors duration-200"
+            data-filter="art auction OR art market"
+          >
+            Art Market
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- News Articles Grid -->
+    <section class="py-12">
+      <div class="container mx-auto px-4">
+        <div
+          id="cards-container"
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+        >
+          <!-- News cards will be inserted here by JavaScript -->
+        </div>
+        <div class="text-center mt-12">
+          <button
+            id="load-more-btn"
+            class="px-6 py-3 bg-black text-white font-medium rounded-md hover:bg-gray-800 transition-colors duration-200"
+          >
+            Load More Articles
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="py-16 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <div
+          class="max-w-4xl mx-auto bg-white p-8 md:p-12 rounded-lg shadow-sm"
+        >
+          <div class="text-center">
+            <h2 class="text-3xl font-semibold mb-4">
+              Subscribe to Our Newsletter
+            </h2>
+            <p class="text-gray-600 mb-8 max-w-2xl mx-auto">
+              Get the latest art news, exhibition announcements, and exclusive
+              content delivered directly to your inbox.
+            </p>
+            <form class="flex flex-col md:flex-row gap-4 max-w-lg mx-auto">
+              <input
+                type="email"
+                placeholder="Your email address"
+                class="px-4 py-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent rounded-md flex-grow"
+              />
+              <button
+                type="submit"
+                class="px-6 py-3 bg-black text-white font-medium rounded-md hover:bg-gray-800 transition-colors duration-200"
+              >
+                Subscribe
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <%- include('partials/footer') %>
+
+    <!-- Common Scripts -->
+    <%- include('partials/base-scripts') %>
+
+    <!-- News API Integration -->
+    <script>
+      const url = "https://newsapi.org/v2/everything?q=";
+      const cardsContainer = document.getElementById("cards-container");
+      const loadMoreBtn = document.getElementById("load-more-btn");
+      const searchInput = document.getElementById("searchInput");
+      const searchButton = document.getElementById("searchButton");
+      const clearButton = document.getElementById("clearButton");
+      const filterButtons = document.querySelectorAll(".news-filter");
+
+      let articles = [];
+      let articlesToShow = 8;
+      let currentFilter = "art OR design OR painting OR sculpture OR auction";
+
+      window.addEventListener("load", () => fetchNews(currentFilter));
+
+      // Handle filter buttons
+      filterButtons.forEach((button) => {
+        button.addEventListener("click", function () {
+          filterButtons.forEach((btn) => btn.classList.remove("active"));
+          this.classList.add("active");
+          currentFilter = this.getAttribute("data-filter");
+          articlesToShow = 8;
+          fetchNews(currentFilter);
+        });
+      });
+
+      // Search functionality
+      searchButton.addEventListener("click", () => {
+        const searchTerm = searchInput.value.trim();
+        if (searchTerm) {
+          articlesToShow = 8;
+          fetchNews(searchTerm);
+        }
+      });
+
+      searchInput.addEventListener("keyup", (e) => {
+        if (e.key === "Enter") {
+          const searchTerm = searchInput.value.trim();
+          if (searchTerm) {
+            articlesToShow = 8;
+            fetchNews(searchTerm);
+          }
+        }
+      });
+
+      clearButton.addEventListener("click", () => {
+        searchInput.value = "";
+        articlesToShow = 8;
+        fetchNews(currentFilter);
+      });
+
+      // Load more functionality
+      loadMoreBtn.addEventListener("click", () => {
+        articlesToShow += 4;
+        bindData();
+      });
+
+      async function fetchNews(query) {
+        try {
+          // Show loading state
+          cardsContainer.innerHTML =
+            '<div class="col-span-full text-center py-12"><i class="fas fa-circle-notch fa-spin text-4xl text-gray-400"></i></div>';
+
+          // Call our own server endpoint instead of NewsAPI directly
+          const res = await fetch(`/api/news?q=${encodeURIComponent(query)}`);
+          const data = await res.json();
+
+          // Check if there was an error
+          if (data.error) {
+            throw new Error(data.message || "Failed to fetch news");
+          }
+
+          articles = data.articles || [];
+          console.log(articles);
+          bindData();
+        } catch (error) {
+          console.error("Error fetching news:", error);
+          cardsContainer.innerHTML =
+            '<div class="col-span-full text-center py-12"><p class="text-red-500">Failed to load news articles. Please try again later.</p></div>';
+          loadMoreBtn.style.display = "none";
+        }
+      }
+
+      function bindData() {
+        cardsContainer.innerHTML = "";
+
+        if (articles.length === 0) {
+          cardsContainer.innerHTML =
+            '<div class="col-span-full text-center py-12"><p class="text-gray-500">No articles found matching your search.</p></div>';
+          loadMoreBtn.style.display = "none";
+          return;
+        }
+
+        const slicedArticles = articles.slice(0, articlesToShow);
+
+        slicedArticles.forEach((article) => {
+          if (!article.urlToImage) return;
+          const card = createCard(article);
+          cardsContainer.appendChild(card);
+        });
+
+        loadMoreBtn.style.display =
+          articlesToShow >= articles.length ? "none" : "block";
+      }
+
+      function createCard(article) {
+        const card = document.createElement("div");
+        card.className =
+          "bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300";
+
+        const formattedDate = new Date(article.publishedAt).toLocaleDateString(
+          "en-US",
+          {
+            day: "numeric",
+            month: "short",
+            year: "numeric",
+          }
+        );
+
+        card.innerHTML = `
+        <div class="relative overflow-hidden">
+          <img src="${article.urlToImage}" alt="${
+          article.title
+        }" class="w-full h-48 object-cover transform hover:scale-105 transition-transform duration-300">
+          <div class="absolute bottom-0 left-0 bg-black bg-opacity-70 text-white px-3 py-1 text-xs">
+            ${formattedDate}
+          </div>
+        </div>
+        <div class="p-4">
+          <h3 class="font-medium text-gray-900 text-lg mb-2 line-clamp-2">${
+            article.title
+          }</h3>
+          <p class="text-sm text-gray-600 mb-4 line-clamp-3">${
+            article.description || ""
+          }</p>
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-gray-500">${
+              article.source.name || "Unknown Source"
+            }</span>
+            <a href="${
+              article.url
+            }" target="_blank" class="text-black hover:text-gray-700 text-sm font-medium transition-colors duration-200">
+              Read More <i class="fas fa-arrow-right ml-1"></i>
+            </a>
+          </div>
+        </div>
+      `;
+
+        return card;
+      }
+    </script>
+
+    <style>
+      .news-filter.active {
+        background-color: #000;
+        color: white;
+      }
+
+      .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .line-clamp-3 {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+    </style>
+  </body>
+</html>

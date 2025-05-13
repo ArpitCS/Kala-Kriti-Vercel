@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Kala-Kriti | Contact</title>
+  <%- include('partials/base-head') %>
+</head>
+<body class="bg-gray-50">
+  <!-- Set the active page for the header -->
+  <% locals.page = 'contact' %>
+  
+  <!-- Header -->
+  <%- include('partials/header') %>
+  
+  <!-- Contact Header Section -->
+  <section class="bg-white py-12">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto text-center">
+        <h1 class="text-4xl md:text-5xl font-semibold mb-4">Contact Us</h1>
+        <p class="text-gray-600 text-lg">
+          We'd love to hear from you! Reach out for inquiries, support, or just to say hello.
+        </p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Contact Form & Details Section -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col lg:flex-row gap-8 max-w-6xl mx-auto">
+        <!-- Contact Form -->
+        <div class="w-full lg:w-1/2">
+          <div class="bg-gray-50 rounded-lg p-8 shadow-sm">
+            <h2 class="text-2xl font-semibold mb-6">Send Us a Message</h2>
+            <form class="space-y-4">
+              <div>
+                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
+                <input 
+                  type="text" 
+                  id="name" 
+                  name="name" 
+                  placeholder="John Doe" 
+                  class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent" 
+                  required
+                />
+              </div>
+              
+              <div>
+                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Your Email</label>
+                <input 
+                  type="email" 
+                  id="email" 
+                  name="email" 
+                  placeholder="john.doe@example.com" 
+                  class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent" 
+                  required
+                />
+              </div>
+              
+              <div>
+                <label for="subject" class="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+                <input 
+                  type="text" 
+                  id="subject" 
+                  name="subject" 
+                  placeholder="How can we help you?" 
+                  class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent" 
+                  required
+                />
+              </div>
+              
+              <div>
+                <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Your Message</label>
+                <textarea 
+                  id="message" 
+                  name="message" 
+                  rows="6" 
+                  placeholder="Write your message here..." 
+                  class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent" 
+                  required
+                ></textarea>
+              </div>
+              
+              <div class="pt-2">
+                <button 
+                  type="submit" 
+                  class="w-full px-6 py-3 bg-black text-white font-medium rounded-md hover:bg-gray-800 transition-colors duration-200"
+                >
+                  Send Message
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+        
+        <!-- Contact Details -->
+        <div class="w-full lg:w-1/2">
+          <div class="bg-gray-50 rounded-lg p-8 shadow-sm h-full">
+            <h2 class="text-2xl font-semibold mb-6">Our Contact Details</h2>
+            
+            <div class="space-y-6">
+              <div class="flex items-start">
+                <div class="bg-white p-3 rounded-full shadow-sm mr-4">
+                  <i class="fas fa-map-marker-alt text-gray-700"></i>
+                </div>
+                <div>
+                  <h3 class="text-lg font-medium mb-1">Address</h3>
+                  <p class="text-gray-600">Chitkara University, Punjab, India</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start">
+                <div class="bg-white p-3 rounded-full shadow-sm mr-4">
+                  <i class="fas fa-phone text-gray-700"></i>
+                </div>
+                <div>
+                  <h3 class="text-lg font-medium mb-1">Phone</h3>
+                  <p class="text-gray-600">+91 9876543210</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start">
+                <div class="bg-white p-3 rounded-full shadow-sm mr-4">
+                  <i class="fas fa-envelope text-gray-700"></i>
+                </div>
+                <div>
+                  <h3 class="text-lg font-medium mb-1">Email</h3>
+                  <p class="text-gray-600">contact@kala-kriti.com</p>
+                </div>
+              </div>
+              
+              <div class="pt-4">
+                <h3 class="text-lg font-medium mb-3">Connect With Us</h3>
+                <div class="flex space-x-4">
+                  <a href="#" class="bg-white p-3 rounded-full shadow-sm text-gray-700 hover:text-gray-900 transition-colors duration-200">
+                    <i class="fab fa-facebook-f"></i>
+                  </a>
+                  <a href="#" class="bg-white p-3 rounded-full shadow-sm text-gray-700 hover:text-gray-900 transition-colors duration-200">
+                    <i class="fab fa-instagram"></i>
+                  </a>
+                  <a href="#" class="bg-white p-3 rounded-full shadow-sm text-gray-700 hover:text-gray-900 transition-colors duration-200">
+                    <i class="fab fa-twitter"></i>
+                  </a>
+                  <a href="#" class="bg-white p-3 rounded-full shadow-sm text-gray-700 hover:text-gray-900 transition-colors duration-200">
+                    <i class="fab fa-pinterest-p"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Map Section -->
+  <section class="py-12 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="max-w-6xl mx-auto">
+        <div class="bg-white rounded-lg p-4 shadow-sm">
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3437.1751352098267!2d76.65720287604363!3d30.516086474689573!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390fc32344a6e2d7%3A0x81b346dee91799ca!2sChitkara%20University!5e0!3m2!1sen!2sin!4v1735186555761!5m2!1sen!2sin" 
+            class="w-full h-96 rounded-md"
+            style="border:0" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- FAQ Section -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-semibold mb-3">Frequently Asked Questions</h2>
+          <p class="text-gray-600">Find quick answers to common questions</p>
+        </div>
+        
+        <div class="space-y-6">
+          <div class="bg-gray-50 rounded-lg p-6 shadow-sm">
+            <h3 class="text-xl font-medium mb-2">How do I sell my artwork on Kala-Kriti?</h3>
+            <p class="text-gray-600">To sell your artwork, simply create an account, visit the "Sell" page, and follow the instructions to upload your work. Our team will review your submission and guide you through the process.</p>
+          </div>
+          
+          <div class="bg-gray-50 rounded-lg p-6 shadow-sm">
+            <h3 class="text-xl font-medium mb-2">What payment methods do you accept?</h3>
+            <p class="text-gray-600">We accept major credit cards, PayPal, and bank transfers for artwork purchases. All transactions are secured with industry-standard encryption for your protection.</p>
+          </div>
+          
+          <div class="bg-gray-50 rounded-lg p-6 shadow-sm">
+            <h3 class="text-xl font-medium mb-2">How is artwork shipped?</h3>
+            <p class="text-gray-600">Artwork is carefully packaged and shipped using reliable courier services. Shipping options and costs vary based on the artwork size and your location, which will be calculated at checkout.</p>
+          </div>
+          
+          <div class="bg-gray-50 rounded-lg p-6 shadow-sm">
+            <h3 class="text-xl font-medium mb-2">Can I request a custom artwork?</h3>
+            <p class="text-gray-600">Yes! Many of our artists accept commissions for custom artworks. Contact us with your requirements, and we'll connect you with suitable artists for your project.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  <%- include('partials/footer') %>
+  
+  <!-- Common Scripts -->
+  <%- include('partials/base-scripts') %>
+</body>
+</html>
