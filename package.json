@@ -5,15 +5,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "migrate-passwords": "node utils/migrate-passwords.js",
-    "check-passwords": "node utils/check-password-hashing.js",
-    "fix-encryption": "node utils/direct-encryption-fix.js"
+    "dev": "nodemon server.js",
+    "build": "mkdir -p public/css && npx tailwindcss -i ./src/input.css -o ./public/css/tailwind.css --minify"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "autoprefixer": "^10.4.21",
     "axios": "^1.9.0",
     "bcryptjs": "^3.0.2",
     "body-parser": "^1.20.3",
@@ -27,6 +27,8 @@
     "mongodb": "^6.16.0",
     "mongoose": "^8.14.2",
     "morgan": "^1.10.0",
-    "node-fetch": "^3.3.2"
+    "node-fetch": "^3.3.2",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^3.4.17"
   }
 }

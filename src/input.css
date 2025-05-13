@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Poppins', sans-serif;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Playfair Display', serif;
+}
+.artwork-image {
+  aspect-ratio: 3/4;
+  object-fit: cover;
+}
+/* Bootstrap carousel customization */
+.carousel-indicators button {
+  background-color: #ccc !important;
+  height: 10px !important;
+  width: 10px !important;
+  border-radius: 50% !important;
+  margin: 0 4px !important;
+}
+.carousel-indicators .active {
+  background-color: #000 !important;
+}

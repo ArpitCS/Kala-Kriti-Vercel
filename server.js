@@ -264,7 +264,12 @@ app.get("*", (req, res) => {
 // Error Handler Middleware
 app.use(errorHandler);
 
-// Start the Server
-app.listen(port, () => {
-  console.log(`Kala-Kriti Live @ http://localhost:${port}`);
-});
+// For Vercel serverless deployment
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(port, () => {
+    console.log(`Kala-Kriti Live @ http://localhost:${port}`);
+  });
+}
+
+// Export the Express app for Vercel
+module.exports = app;
