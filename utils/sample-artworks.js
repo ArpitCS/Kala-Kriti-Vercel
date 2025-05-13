@@ -1,19 +1,16 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const path = require('path');
 
-// Load environment variables
-dotenv.config({ path: '../.env' });
+// Load environment variables with absolute path
+dotenv.config({ path: path.join(__dirname, '../.env') });
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/kala-kriti', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-  .then(() => console.log('Connected to MongoDB'))
-  .catch(err => {
-    console.error('MongoDB connection error:', err);
-    process.exit(1);
-  });
+// Verify the connection string is loaded
+console.log("MongoDB URI available:", !!process.env.MONGO_URI);
+
+// MongoDB Connection
+const connectDB = require("../config/db");
+connectDB();
 
 // Define the Artwork schema
 const artworkSchema = new mongoose.Schema({

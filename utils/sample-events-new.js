@@ -1,18 +1,18 @@
-// scripts/loadSampleEvents.js
-
 const mongoose = require('mongoose');
-const Event = require('../models/Events'); // adjust path if needed
+const dotenv = require('dotenv');
+const path = require('path');
+const Event = require('../models/Events');
 
-// 1. Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/kala-kriti', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => {
-    console.error('MongoDB connection error:', err);
-    process.exit(1);
-  });
+// Load environment variables with absolute path
+dotenv.config({ path: path.join(__dirname, '../.env') });
+
+// Verify the connection string is loaded
+console.log("MongoDB URI available:", !!process.env.MONGO_URI);
+
+// MongoDB Connection
+const connectDB = require("../config/db");
+connectDB();
+
 
 // 2. Define 12 art-themed sample events
 const sampleEvents = [
