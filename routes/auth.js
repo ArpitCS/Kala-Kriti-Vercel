@@ -24,9 +24,7 @@ router.post('/register', async (req, res) => {
       twitter, 
       facebook, 
       website 
-    } = req.body;
-
-    // Basic validation
+    } = req.body;    // Basic validation
     if (!username || !email || !fullName || !password) {
       console.log('Missing fields for registration');
       return res.status(400).redirect('/register?error=All fields are required');
@@ -35,6 +33,13 @@ router.post('/register', async (req, res) => {
     if (password !== confirmPassword) {
       console.log('Passwords do not match');
       return res.status(400).redirect('/register?error=Passwords do not match');
+    }
+    
+    // Password strength validation
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!passwordRegex.test(password)) {
+      console.log('Password too weak');
+      return res.status(400).redirect('/register?error=Password must be at least 8 characters and include uppercase, lowercase, number and special character');
     }
 
     // Check if user already exists
@@ -49,21 +54,18 @@ router.post('/register', async (req, res) => {
       } else {
         console.log('Username already taken:', username);
         return res.status(400).redirect('/register?error=Username already taken');
-      }
-    }
-
+      }    }
+    
     console.log('Creating new user:', username);
     
-    // Hash password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
+    // Password will be hashed by the pre-save hook in User model
+    
     // Create new user with extended fields
     const newUser = new User({
       username,
       email,
       fullName,
-      password: hashedPassword,
+      password: password, // Will be hashed by pre-save hook
       role: 'artist', // Set default role to artist
       phoneNumber: phoneNumber || '',
       profilePicture: profilePicture || '/uploads/profile/default.jpg',
@@ -74,10 +76,11 @@ router.post('/register', async (req, res) => {
         facebook: facebook || '',
         website: website || ''
       }
-    });
-
-    await newUser.save();
+    });    await newUser.save();
     console.log('User created successfully, ID:', newUser._id);
+    console.log('Password stored format:', 
+      newUser.password.startsWith('$2') ? 'Hashed (correct)' : 'Plain text (incorrect)');
+    console.log('Password first chars:', newUser.password.substring(0, 10) + '...');
 
     // Generate JWT token
     const payload = { userId: newUser._id };
@@ -124,17 +127,14 @@ router.post('/login', async (req, res) => {
         { username },
         { email: username } // Allow login with email as username
       ]
-    });
-
-    if (!user) {
+    });    if (!user) {
       console.log('User not found:', username);
       return res.status(400).redirect('/register?error=User not found. Please register.');
-    }
-
+    }    
     console.log('User found:', user.username, '(ID:', user._id, ')');
-
-    // Check password
-    const isMatch = await bcrypt.compare(password, user.password);
+    
+    // Check password using bcrypt comparison
+    const isMatch = await user.comparePassword(password);
     if (!isMatch) {
       console.log('Invalid password for user:', user.username);
       return res.status(400).redirect('/login?error=Invalid password');
@@ -198,20 +198,17 @@ router.post('/change-password', isAuthenticated, async (req, res) => {
     
     if (newPassword !== confirmPassword) {
       return res.status(400).json({ success: false, message: 'New passwords do not match' });
-    }
-    
-    // Get user with password
+    }    // Get user with password
     const user = await User.findById(req.user.id);
     
-    // Check if current password is correct
-    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    // Check if current password is correct using bcrypt
+    const isMatch = await user.comparePassword(currentPassword);
     if (!isMatch) {
       return res.status(400).json({ success: false, message: 'Current password is incorrect' });
     }
     
-    // Hash new password
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(newPassword, salt);
+    // Set new password (will be hashed by the pre-save hook)
+    user.password = newPassword;
     
     await user.save();
     

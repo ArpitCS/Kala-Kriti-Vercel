@@ -4,7 +4,10 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "migrate-passwords": "node utils/migrate-passwords.js",
+    "check-passwords": "node utils/check-password-hashing.js",
+    "fix-encryption": "node utils/direct-encryption-fix.js"
   },
   "keywords": [],
   "author": "",

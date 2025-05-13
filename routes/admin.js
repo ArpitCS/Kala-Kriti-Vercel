@@ -146,7 +146,7 @@ router.post('/users', async (req, res) => {
       username,
       email,
       fullName,
-      password, // Will be hashed by the pre-save hook in the User model
+      password, // Will be hashed by pre-save hook
       role: role || 'user'
     });
     

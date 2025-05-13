@@ -73,8 +73,7 @@ const userSchema = new mongoose.Schema({
   resetPasswordExpire: Date,
   // For artists
   exhibitionHistory: [String],
-  artistStatement: String,
-  socialMedia: {
+  artistStatement: String,  socialMedia: {
     instagram: String,
     twitter: String,
     facebook: String,
@@ -84,22 +83,44 @@ const userSchema = new mongoose.Schema({
 
 // Pre-save hook to hash password
 userSchema.pre('save', async function(next) {
+  // Debug logs
+  console.log('Pre-save hook triggered for user:', this.username || 'new user');
+  console.log('Password modified:', this.isModified('password'));
+  console.log('Current password format:', this.password.substring(0, 10) + '...');
+  
+  // Only hash the password if it's modified (or new)
   if (!this.isModified('password')) {
+    console.log('Password not modified, skipping hashing');
     return next();
   }
   
   try {
+    console.log('Hashing password for user:', this.username || 'new user');
+    
+    // Generate a salt with complexity of 10
     const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
+    
+    // Hash the password using the salt
+    const hashedPassword = await bcrypt.hash(this.password, salt);
+    console.log('Generated hash:', hashedPassword.substring(0, 10) + '...');
+    
+    this.password = hashedPassword;
+    console.log('Password successfully hashed');
     next();
   } catch (error) {
+    console.error('Error hashing password:', error);
     next(error);
   }
 });
 
 // Method to compare passwords
-userSchema.methods.comparePassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
+userSchema.methods.comparePassword = async function(enteredPassword) {
+  try {
+    return await bcrypt.compare(enteredPassword, this.password);
+  } catch (error) {
+    console.error("Error comparing passwords:", error);
+    return false;
+  }
 };
 
 const User = mongoose.model("User", userSchema);
