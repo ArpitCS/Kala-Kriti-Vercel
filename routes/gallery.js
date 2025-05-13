@@ -17,13 +17,26 @@ router.get("/", async (req, res) => {
     );
     const data = await response.json();
     
+    // Add logging to see what's coming back
+    console.log("API Response status:", response.status);
+    console.log("API Response data structure:", Object.keys(data));
+    
+    // Check if data.data exists and is valid before processing
+    if (!data || !data.data || !Array.isArray(data.data)) {
+      console.error("Invalid or unexpected API response:", data);
+      return res.render("gallery", { 
+        artworks: [],
+        error: "Failed to load artworks. Please try again later." 
+      });
+    }
+    
     // Process artworks to match your gallery structure
     const artworks = processArtworks(data.data);
     
     res.render("gallery", { 
       artworks,
       currentPage: page,
-      totalPages: Math.ceil(data.pagination.total_pages)
+      totalPages: Math.ceil(data.pagination?.total_pages || 1)
     });
   } catch (error) {
     console.error("Error fetching artworks:", error);
@@ -102,6 +115,12 @@ router.get("/filter/:category", async (req, res) => {
 
 // Helper function to process API artworks into the format needed for the gallery
 function processArtworks(apiArtworks) {
+  // Check if apiArtworks is valid before mapping
+  if (!apiArtworks || !Array.isArray(apiArtworks)) {
+    console.error("Invalid artwork data received:", apiArtworks);
+    return []; // Return empty array if input is invalid
+  }
+  
   return apiArtworks.map(artwork => {
     // Generate image URL using image_id
     let imageUrl = artwork.image_id 
